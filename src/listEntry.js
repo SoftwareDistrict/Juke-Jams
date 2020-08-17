@@ -1,6 +1,7 @@
 import React from 'react';
 import {Image, ListGroupItem } from "react-bootstrap/";
 
+// User song list entry
 const ListEntry = ({ video, listClickHandler }) => {
   return (
     <ListGroupItem action style={{padding: "5%"}}>

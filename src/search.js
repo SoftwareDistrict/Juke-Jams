@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 
+// Song search
 const Search = ({ searchHandler }) => {
   return (
     <div style={{ fontWeight: "bold", fontFamily: "verdana"}}>

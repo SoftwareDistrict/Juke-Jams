@@ -1,3 +1,4 @@
+// Router
 const { Router } = require('express');
 const router = Router();
 const {
@@ -19,27 +20,21 @@ router.post('/login', async (req, res) => {
         res.send({ user: dbResponse });
       })
   } else {
-    // Look up (findOne) playlist id with user id (user.id)
     const playlist = await Playlist.findOne({ where: { userId: user.id } })
     if (playlist) {
-      // Look up (findAll) songIDs with playlistID
       const playlistSongs = await PlaylistSong.findAll({ where: { playlistId: playlist.id }, raw: true })
       if (playlistSongs) {
-        // Look up (findAll) songs with songID
         const songs = playlistSongs.map(song => Song.findByPk(song.songId, { raw: true }));
-
         await Promise.all(songs).then(mapped => res.send({ user, songs: mapped }));
         return;
-        // const songs = await Song.findAll({ where: {  } })
       }
     }
-    res.send({ user }); // Send em back to the client
+    res.send({ user });
   }
 });
 
-// update / reset votes
+// Update votes
 router.put('/vote', async (req, res) => {
-  // console.log('vote request body', req.body)
   const { url, direction, accessCode, reset, userId } = req.body;
   const party = await Party.findOne({ where: { accessCode } });
   const playlist = await Playlist.findOne({ where: { userId: party.hostId } })
@@ -57,7 +52,6 @@ router.put('/vote', async (req, res) => {
     })
     return;
   } else {
-    // console.log(song, playlist)
     const playlistSong = await PlaylistSong.findOne({ where: { songId: song.id, playlistId: playlist.id } })
     let voteObj = { vote: playlistSong.vote || 0 }
     if (direction === 'up') {
@@ -81,6 +75,8 @@ router.put('/vote', async (req, res) => {
   }
 });
 
+// Get the playlist of a party
+  // Done by access code
 router.get('/party/:code', async (req, res) => {
   const accessCode = req.params.code;
   
@@ -102,7 +98,7 @@ router.get('/party/:code', async (req, res) => {
   });
 })
 
-// create / delete host
+// Create host and party
 router.post('/host', async (req, res) => {
   const { host, id } = req.body;
   const user = await User.findByPk(id);
@@ -129,6 +125,7 @@ router.post('/host', async (req, res) => {
   }
 });
 
+// Playlist creation
 router.post('/playlist/:user', async (req, res) => {
 
   const userId = req.params.user;
@@ -168,19 +165,12 @@ router.post('/playlist/:user', async (req, res) => {
   res.send(alreadyExists); // Tell client if song was already in the database
 });
 
+// Update the party's currently playing video according to access code
 router.put('/party', async (req, res) => {
   const { nowPlaying, accessCode } = req.body;
   await Party.update({ nowPlaying }, { where: { accessCode } })
   res.sendStatus(200);
 })
-
-// router.put('/playlist', async (req, res) => {
-//   const { userId, url } = req.body;
-//   let song = await Song.findOne({ where: { url } })
-//   let playlistSong = await PlaylistSong.findOne({ where: { userId, songId: song.id } })
-
-//   })
-// });
 
 module.exports = {
 	router,

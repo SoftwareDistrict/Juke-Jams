@@ -1,13 +1,11 @@
 import React from 'react';
 
-// import ListEntry from './listEntry.js';
-
+// User playlist
 const Playlist = ({ userPlaylist, deleteSong }) => {
-  // console.log(videos);
   return (
     <div>
       <h3 style={{ 
-        color: "black", backgroundColor: "#ECEBEB", fontFamily: "verdana", textalign: "center", fontSize: 20, fontWeight: 100, textAlign: "center", padding: "10px 20px"
+        color: "black", backgroundColor: "#ECEBEB", fontFamily: "Big Shoulders Display", textalign: "center", fontSize: 20, fontWeight: 100, textAlign: "center", padding: "10px 20px"
         }}>Your Playlist:</h3>
       <ul>
         {userPlaylist.map((video, index) => (

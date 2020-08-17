@@ -3,6 +3,7 @@ import Queue from './queue.js';
 import VideoPlayer from './videoPlayer.js';
 import Button from 'react-bootstrap/Button';
 
+// Party page
 const PartyPage = ({
   video,
   userPlaylist,
@@ -19,7 +20,7 @@ const PartyPage = ({
 }) => {
   const buttonText = hostPartyClicked ? 'Drop Hosted Party' : 'Leave Party';
   return (
-    <div style={{ color: "black", backgroundColor: "#ECEBEB", fontFamily: "fantasy", textalign: "center", fontSize: 15, fontWeight: 60, textAlign: "center", padding: "10px 20px" }}>
+    <div style={{ color: "black", backgroundColor: "white", fontFamily: "Big Shoulders Display", textalign: "center", fontSize: 20, fontWeight: 60, textAlign: "center", padding: "10px 20px" }}>
       Your Party Access Code is: {`${accessCode}`}
       <VideoPlayer video={video} nowPlaying={nowPlaying} />
       <Queue

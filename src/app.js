@@ -43,17 +43,17 @@ class App extends Component {
     this.refreshParty = this.refreshParty.bind(this);
     this.deleteSong = this.deleteSong.bind(this);
   }
-
+  // Toggles the initial player
   componentDidMount() {
     $('#player').toggle();
   }
-
+  // Handle's the access code
   handleFormChange(event) {
     return this.setState({
       accessCode: event.target.value,
     });
   }
-
+  // Join a Party click handler
   clickJoinParty() {
     const { accessCode, votes } = this.state;
     getParty(accessCode)
@@ -80,7 +80,7 @@ class App extends Component {
         this.refreshParty(true);
       })
   }
-
+  // Host a party click handler
   clickHostParty() {
     if (this.state.video.id) {
       window.ytPlayer.loadVideoById(this.state.video.id.videoId)
@@ -94,7 +94,7 @@ class App extends Component {
       this.refreshParty(true);
     }
   }
-
+  // Drop party click handler
   dropHostParty() {
     this.refreshParty(false);
     if (this.state.hostPartyClicked) {
@@ -118,7 +118,7 @@ class App extends Component {
       })
     }
   }
-
+  // Axios post request to toggle host status
   toggleHost() {
     const { currentId, hostPartyClicked } = this.state;
     if (!hostPartyClicked) {
@@ -142,7 +142,7 @@ class App extends Component {
       });
     }
   }
-
+  // Google auth response
   responseGoogle(response) {
       postLogin({
         firstName: response.profileObj.givenName,
@@ -174,7 +174,7 @@ class App extends Component {
         });
       });
   }
-
+  // Refreshes votes/now playing data for party every 5 seconds
   refreshParty(bool) {
     const { votes } = this.state;
     if (bool) {
@@ -229,7 +229,7 @@ class App extends Component {
       });
     }
   }
-  // Handles Clicks on YouTube Search Results
+  // Handles clicks on youtube search results list
   listClickHandler(video) {
     const { hostPartyClicked, currentId, userPlaylist } = this.state;
     if (hostPartyClicked) {
@@ -254,12 +254,9 @@ class App extends Component {
         .catch((err) => console.log(err));
     }
   }
-
+  // Updates vote count in state and on db
   voteUpdate(video, direction) {
     const { currentId, accessCode, votes } = this.state;
-    // this.setState({
-    //   voteClicked: true
-    // });
     putVotes({
       userId: currentId,
       url: video.id.videoId,
@@ -267,14 +264,13 @@ class App extends Component {
       accessCode
     })
     .then(({ data }) => {
-      // setVoteCount(data.newVoteCount || 0);
       votes[video.id.videoId] = data.newVoteCount || 0
       this.setState({
         votes
       })
     });
   }
-
+  // Deletes song from state and db
   deleteSong(video, index) {
     const { userPlaylist, currentId } = this.state;
     console.log('delete song called with', video, index)
@@ -289,13 +285,6 @@ class App extends Component {
       })
     })
   }
-
-  // sortPlaylist() {
-  //   const { userPlaylist } = this.state;
-  //   this.setState({
-  //     userPlaylist: userPlaylist.sort()
-  //   })
-  // }
 
   render() {
     const {
@@ -313,6 +302,7 @@ class App extends Component {
       votes
     } = this.state;
     window.accessCode = accessCode;
+  //if hostParty is clicked, render the Party Page
     if (hostPartyClicked || joinPartyClicked) {
       return (
         <PartyPage
@@ -328,8 +318,10 @@ class App extends Component {
         />
       );
     }
+  // If the login is not complete, then render the google auth again
     if (!loginComplete) {
       const login = (
+        // Google auth
         <GoogleLogin
           clientId={OAUTH_CLIENT_ID}
           buttonText="Login"
@@ -340,6 +332,7 @@ class App extends Component {
       );
       return <Landing login={login} />;
     }
+    // Renders the access code route and user page upon login
     return (
   <Container style={{ display: "flex", justifyContent: 'center', border: "8px solid #cecece" }}>
   <Row style={{ padding: "5px" }}>

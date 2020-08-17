@@ -2,8 +2,8 @@ import React from 'react';
 import ListGroup from "react-bootstrap/ListGroup";
 import ListEntry from './listEntry.js';
 
+// Song search list
 const SearchResults = ({ videos, listClickHandler }) => {
-  // console.log(videos);
   return (
     <ListGroup style={{ padding: "5%" }}> 
     <div>

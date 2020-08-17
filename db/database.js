@@ -2,11 +2,13 @@
 const Sequelize = require('sequelize');
 const { DB_NAME, DB_USER, DB_PASS, DB_HOST, DB_PORT } = require('../config')
 
+// DB connection
 const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
   dialect:  'mysql',
-  // port:     DB_PORT,
   host:     DB_HOST,
 });
+
+// Tables
 
 const User = sequelize.define('User', {
   firstName: Sequelize.STRING,
@@ -93,6 +95,7 @@ const PartySongUser = sequelize.define('PartySongUser', {
 	}
 });
 
+// Queries
 sequelize
   .query('DROP DATABASE IF EXISTS greenfield')
   .then(() => sequelize.query('CREATE DATABASE greenfield'))

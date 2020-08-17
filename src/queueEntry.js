@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import {Image, ListGroupItem } from "react-bootstrap/";
 
+// Host playlist entry
 const QueueEntry = ({ video, listClickHandler, voteUpdate, sortPlaylist, votes }) => {
-  // const [voteCount, setVoteCount] = useState(0);
   return (
     <ListGroupItem action style={{padding: "5%"}}>
       <div>
