@@ -81,21 +81,25 @@ router.get('/party/:code', async (req, res) => {
   const accessCode = req.params.code;
   
   const party = await Party.findOne({ where: { accessCode } });
-  console.log('the access code', accessCode, 'the party', party)
-  const playlist = await Playlist.findOne({ where: { userId: party.hostId } })
-
-  const playlistSongs = await PlaylistSong.findAll({ where: { playlistId: playlist.id } }, {raw: true})
-
-  const songsWithDetails = playlistSongs.map(song => {
-    return Song.findByPk(song.songId, { raw: true })
-  })
-
-  await Promise.all(songsWithDetails).then(result => {
-    res.send(result.map((song, index) => {
-      const nowPlaying = song.url === party.nowPlaying;
-      return { song, vote: playlistSongs[index].vote || 0, nowPlaying }
-    }))
-  });
+  // console.log('the access code', accessCode, 'the party', party)
+  if (party !== null) {
+    const playlist = await Playlist.findOne({ where: { userId: party.hostId } })
+  
+    const playlistSongs = await PlaylistSong.findAll({ where: { playlistId: playlist.id } }, {raw: true})
+  
+    const songsWithDetails = playlistSongs.map(song => {
+      return Song.findByPk(song.songId, { raw: true })
+    })
+  
+    await Promise.all(songsWithDetails).then(result => {
+      res.send(result.map((song, index) => {
+        const nowPlaying = song.url === party.nowPlaying;
+        return { song, vote: playlistSongs[index].vote || 0, nowPlaying }
+      }))
+    });
+  } else {
+    res.sendStatus(500);
+  }
 })
 
 // Create host and party
