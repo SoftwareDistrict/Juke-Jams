@@ -171,6 +171,7 @@ router.put('/party', async (req, res) => {
 
 router.put('/playlist', async (req, res) => {
   const { userId, url } = req.body;
+  console.log('request body', req.body)
   let song = await Song.findOne({ where: { url } })
   let playlistSong = await PlaylistSong.findOne({ where: { userId, songId: song.id } })
   playlistSong.destroy()

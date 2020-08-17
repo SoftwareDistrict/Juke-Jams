@@ -276,6 +276,7 @@ class App extends Component {
 
   deleteSong(video, index) {
     const { userPlaylist, currentId } = this.state;
+    console.log('delete song called with', video, index)
     putPlaylist({
       url: video.id.videoId,
       userId: currentId
