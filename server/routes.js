@@ -136,12 +136,7 @@ router.post('/playlist/:user', async (req, res) => {
   let song = await Song.findOne({ where: { url: req.body.url } }) // Look for song in the db
   let alreadyExists = false;
 
-  if (req.body.delete) {
-    song.destroy()
-    .then(() => {
-      res.sendStatus(200)
-    })
-  } else if (song === null) {
+  if (song === null) {
     await Song.create(req.body) // Create entry if its not there
       .then(({ dataValues }) => {
         song = dataValues; // Save the song the db generated
@@ -172,6 +167,19 @@ router.put('/party', async (req, res) => {
   const { nowPlaying, accessCode } = req.body;
   await Party.update({ nowPlaying }, { where: { accessCode } })
   res.sendStatus(200);
+})
+
+router.delete('/playlist', async (req, res) => {
+  const { userId, url } = req.body;
+  let song = await Song.findOne({ where: { url } })
+  let playlistSong = await PlaylistSong.findOne({ where: { userId, songId: song.id } })
+  playlistSong.destroy()
+  .then(() => {
+    res.sendStatus(200);
+  })
+  .catch(() => {
+    res.sendStatus(500);
+  })
 })
 
 module.exports = {

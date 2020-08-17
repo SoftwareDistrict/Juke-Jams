@@ -31,11 +31,16 @@ const postPlaylist = (options, currentId) => {
   return axios.post(`${URL}/playlist/${currentId}`, options)
 }
 
+const deletePlaylist = (options) => {
+  return axios.delete(`${URL}/playlist`, options)
+}
+
 module.exports = {
   getParty,
   putVotes,
   postHost,
   postLogin,
   getYouTube,
-  postPlaylist
+  postPlaylist,
+  deletePlaylist
 };

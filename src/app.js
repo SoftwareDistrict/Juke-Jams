@@ -5,7 +5,7 @@ import QueueEntry from './queueEntry.js';
 import GoogleLogin from 'react-google-login';
 import { } from './axiosRequests.js'
 import { YOUTUBE_API_KEY, OAUTH_CLIENT_ID } from '../config.js';
-import { getParty, putVotes, postHost, postLogin, getYouTube, postPlaylist } from './axiosRequests'
+import { getParty, putVotes, postHost, postLogin, getYouTube, postPlaylist, deletePlaylist } from './axiosRequests'
 import $ from 'jquery';
 import player from './youTubeScript.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -276,12 +276,15 @@ class App extends Component {
 
   deleteSong(video, index) {
     const { userPlaylist, currentId } = this.state;
-    postPlaylist({
+    deletePlaylist({
       url: video.id.videoId,
-      delete: true,
+      userId: currentId
     }, currentId)
-    this.setState({
-      userPlaylist: userPlaylist.splice(index, 1)
+    .then(() => {
+      userPlaylist.splice(index, 1)
+      this.setState({
+        userPlaylist
+      })
     })
   }
 
