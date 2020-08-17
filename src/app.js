@@ -4,7 +4,8 @@ import PartyPage from './partyPage.js';
 import QueueEntry from './queueEntry.js';
 import GoogleLogin from 'react-google-login';
 import { } from './axiosRequests.js'
-import { YOUTUBE_API_KEY, OAUTH_CLIENT_ID } from '../config.js';
+import { YOUTUBE_API_KEY} from '../config.js';
+import {OAUTH_CLIENT_ID } from '../googleCli.js'
 import { getParty, putVotes, postHost, postLogin, getYouTube, postPlaylist } from './axiosRequests'
 import $ from 'jquery';
 import player from './youTubeScript.js';
