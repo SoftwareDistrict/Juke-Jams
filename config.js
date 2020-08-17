@@ -1,6 +1,6 @@
 const OAUTH_CLIENT_ID = "314042252557-0ckq9tej6vdl0mtrfcftila7tth46h22.apps.googleusercontent.com";
 // const OAUTH_CLIENT_ID = "1026149554561-9k189ri77spejnogk2nkshkbd0vaivgh.apps.googleusercontent.com"
-const YOUTUBE_API_KEY = "AIzaSyAnIDqtMssJwNgo3kFeIRPkQ8GZ9T8cgCU";
+const YOUTUBE_API_KEY = "AIzaSyA81l79bg5GZD0_6mzAB-z2wMHYZeLxxPU";
 const URL = 'https://jukejams.herokuapp.com';
 // const URL = 'http://localhost'
 // const PORT = 3000;
