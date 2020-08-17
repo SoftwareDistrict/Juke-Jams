@@ -8,7 +8,7 @@ const DB_NAME = 'greenfield'
 const DB_USER = 'admin'
 const DB_PASS = 'jukejams'
 const DB_HOST = 'jukey-db.c0ovotldczny.us-east-1.rds.amazonaws.com'
-const DB_PORT = 3306
+const DB_PORT = 3306;
 
 module.exports = {
   OAUTH_CLIENT_ID,
