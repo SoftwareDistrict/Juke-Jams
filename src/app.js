@@ -10,6 +10,7 @@ import $ from 'jquery';
 import player from './youTubeScript.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Button, Jumbotron, OverlayTrigger, Popover } from 'react-bootstrap';
+import Landing from './landing.js';
 class App extends Component {
   constructor(props) {
     super(props);
