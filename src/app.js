@@ -40,6 +40,7 @@ class App extends Component {
     this.clickJoinParty = this.clickJoinParty.bind(this);
     this.voteUpdate = this.voteUpdate.bind(this);
     this.refreshParty = this.refreshParty.bind(this);
+    this.deleteSong = this.deleteSong.bind(this);
   }
 
   componentDidMount() {
