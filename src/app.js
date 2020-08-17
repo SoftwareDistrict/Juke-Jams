@@ -280,10 +280,8 @@ class App extends Component {
       url: video.id.videoId,
       delete: true,
     }, currentId)
-    .then(() => {
-      this.setState({
-        userPlaylist: userPlaylist.splice(index, 1)
-      })
+    this.setState({
+      userPlaylist: userPlaylist.splice(index, 1)
     })
   }
 
