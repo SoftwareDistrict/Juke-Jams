@@ -28,12 +28,12 @@ const getYouTube = (options) => {
 }
 
 const postPlaylist = (options, currentId) => {
-  return axios.post(`${URL}/playlist/${currentId}`, options)
+  return axios.post(`${URL}/playlist/${currentId}`, options);
 }
 
 const putPlaylist = (options) => {
-  console.log('inside the put function')
-  return axios.put(`${URL}/playlist/`, options)
+  console.log('inside the put function');
+  return axios.put(`${URL}/playlist/`, options);
 }
 
 module.exports = {
