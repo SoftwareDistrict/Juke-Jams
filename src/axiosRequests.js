@@ -31,10 +31,10 @@ const postPlaylist = (options, currentId) => {
   return axios.post(`${URL}/playlist/${currentId}`, options);
 }
 
-const putPlaylist = (options) => {
-  console.log('inside the put function');
-  return axios.put(`${URL}/playlist/`, options);
-}
+// const putPlaylist = (options) => {
+//   console.log('inside the put function');
+//   return axios.put(`${URL}/playlist/`, options);
+// }
 
 module.exports = {
   getParty,
@@ -43,5 +43,5 @@ module.exports = {
   postLogin,
   getYouTube,
   postPlaylist,
-  putPlaylist
+  // putPlaylist
 };
