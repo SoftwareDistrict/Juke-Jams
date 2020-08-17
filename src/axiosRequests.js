@@ -32,7 +32,8 @@ const postPlaylist = (options, currentId) => {
 }
 
 const putPlaylist = (options) => {
-  return axios.put(`${URL}/playlist`, options)
+  console.log('inside the put function')
+  return axios.put(`${URL}/playlist/`, options)
 }
 
 module.exports = {

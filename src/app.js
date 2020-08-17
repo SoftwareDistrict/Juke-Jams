@@ -280,7 +280,7 @@ class App extends Component {
     putPlaylist({
       url: video.id.videoId,
       userId: currentId
-    }, currentId)
+    })
     .then(() => {
       userPlaylist.splice(index, 1)
       this.setState({
