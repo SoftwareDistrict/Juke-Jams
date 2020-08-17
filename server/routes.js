@@ -57,9 +57,9 @@ router.put('/vote', async (req, res) => {
     })
     return;
   } else {
-    // console.log(song, playlist);
+    // console.log(song, playlist)
     const playlistSong = await PlaylistSong.findOne({ where: { songId: song.id, playlistId: playlist.id } })
-    let voteObj = { vote: playlistSong.vote }
+    let voteObj = { vote: playlistSong.vote || 0 }
     if (direction === 'up') {
       voteObj.vote++;
     } else if (direction === 'down' && voteObj.vote !== 0) {
