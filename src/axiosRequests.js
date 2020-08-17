@@ -31,8 +31,8 @@ const postPlaylist = (options, currentId) => {
   return axios.post(`${URL}/playlist/${currentId}`, options)
 }
 
-const deletePlaylist = (options) => {
-  return axios.delete(`${URL}/playlist`, options)
+const putPlaylist = (options) => {
+  return axios.put(`${URL}/playlist`, options)
 }
 
 module.exports = {
@@ -42,5 +42,5 @@ module.exports = {
   postLogin,
   getYouTube,
   postPlaylist,
-  deletePlaylist
+  putPlaylist
 };
