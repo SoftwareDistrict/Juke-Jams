@@ -258,7 +258,7 @@ class App extends Component {
     const { currentId, accessCode, votes } = this.state;
     // this.setState({
     //   voteClicked: true
-    // })
+    // });
     putVotes({
       userId: currentId,
       url: video.id.videoId,
