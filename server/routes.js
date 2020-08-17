@@ -180,7 +180,7 @@ router.put('/party', async (req, res) => {
 //   let playlistSong = await PlaylistSong.findOne({ where: { userId, songId: song.id } })
 
 //   })
-// })
+// });
 
 module.exports = {
 	router,
