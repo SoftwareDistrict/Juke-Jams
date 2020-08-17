@@ -4,9 +4,6 @@ import {Image, ListGroupItem } from "react-bootstrap/";
 
 const QueueEntry = ({ video, listClickHandler, voteUpdate, sortPlaylist, votes }) => {
   // const [voteCount, setVoteCount] = useState(0);
-  // video.votes = video.votes || 0
-  // let voteCountText = voteClicked ? voteCount : video.votes
-  // voteCountText = voteCountText || 0;
   return (
     <ListGroupItem action style={{padding: "5%"}}>
       <div>
