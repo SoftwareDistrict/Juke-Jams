@@ -174,11 +174,9 @@ class App extends Component {
   }
 
   refreshParty(bool) {
-    console.log('called refresh party with', bool)
     const { votes } = this.state;
-    let refresh;
     if (bool) {
-      refresh = setInterval(() => {
+      this.refresh = setInterval(() => {
         console.log('ran refresh')
         if (window.accessCode) {
           getParty(window.accessCode)
@@ -196,7 +194,7 @@ class App extends Component {
       }, 5000)
     } else {
       console.log('cancelling refresh');
-      clearTimeout(refresh);
+      clearInterval(this.refresh);
     }
   }
 
@@ -275,6 +273,19 @@ class App extends Component {
     });
   }
 
+  deleteSong(video, index) {
+    const { userPlaylist, currentId } = this.state;
+    postPlaylist({
+      url: video.id.videoId,
+      delete: true,
+    }, currentId)
+    .then(() => {
+      this.setState({
+        userPlaylist: userPlaylist.splice(index, 1)
+      })
+    })
+  }
+
   // sortPlaylist() {
   //   const { userPlaylist } = this.state;
   //   this.setState({
@@ -338,6 +349,7 @@ class App extends Component {
           handleFormChange={this.handleFormChange}
           accessCode={accessCode}
           currentUser={currentUser}
+          deleteSong={this.deleteSong}
         />
     </Col>
   </Row>

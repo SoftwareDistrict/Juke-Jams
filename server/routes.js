@@ -136,7 +136,12 @@ router.post('/playlist/:user', async (req, res) => {
   let song = await Song.findOne({ where: { url: req.body.url } }) // Look for song in the db
   let alreadyExists = false;
 
-  if (song === null) {
+  if (req.body.delete) {
+    song.destroy()
+    .then(() => {
+      res.sendStatus(200)
+    })
+  } else if (song === null) {
     await Song.create(req.body) // Create entry if its not there
       .then(({ dataValues }) => {
         song = dataValues; // Save the song the db generated

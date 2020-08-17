@@ -13,13 +13,13 @@ const UserPage = ({
   userPlaylist,
   handleFormChange,
   handleFormSubmit,
-  currentUser
+  currentUser,
+  deleteSong
 }) => {
   let playlist;
-  if (userPlaylist.length > 0) {
-    playlist = <Playlist userPlaylist={userPlaylist} />;
+  if (userPlaylist.length) {
+    playlist = <Playlist userPlaylist={userPlaylist} deleteSong={deleteSong} />;
   }
-
   return (
     <div>
       <h1 style={{ color: "black", backgroundColor: "#ECEBEB", fontFamily: "fantasy", textalign: "center", fontSize: 75, fontWeight: 600, textAlign: "center", padding: "30px 20px" }}>
