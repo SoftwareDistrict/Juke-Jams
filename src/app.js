@@ -328,15 +328,16 @@ class App extends Component {
       );
     }
     if (!loginComplete) {
-      return (
+      const login = (
         <GoogleLogin
           clientId={OAUTH_CLIENT_ID}
           buttonText="Login"
           onSuccess={this.responseGoogle}
           onFailure={this.responseGoogle}
-          cookiePolicy={'single_host_origin'}
+          cookiePolicy={"single_host_origin"}
         />
       );
+      return <Landing login={login} />;
     }
     return (
   <Container style={{ display: "flex", justifyContent: 'center', border: "8px solid #cecece" }}>
