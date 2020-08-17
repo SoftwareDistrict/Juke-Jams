@@ -128,7 +128,7 @@ class App extends Component {
       })
       .then(({ data }) => {
         this.setState({
-          accessCode: data
+          accessCode: data,
         });
       });
     } else {
