@@ -89,9 +89,11 @@ router.post('/checkCell', async (req, res) => {
     // console.log('rowwwwwwww', row.dataValues);
     const row = data.dataValues;
     if (row.cell === null) {
-      res.send(false);
+      res.send({ bool: false, cell: null });
+      // res.send(false);
     } else {
-      res.send(true);
+      res.send({ bool: true, cell: row.cell });
+      // res.send(true);
     }
   });
 });
