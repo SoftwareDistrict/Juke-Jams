@@ -43,8 +43,8 @@ const PartyPage = ({
       {admin ? <div>
         <div>
           <ul id='inviteesDisplay'>{invitees}</ul>
-          <button onClick={setShowInvitees(!showInvitees)}>Close Invites</button>
         </div>
+        <button onClick={setShowInvitees(!showInvitees)}>Invites</button>
         <button onClick={()=>{
           console.log(showSearchComp)
           setShowSearchComp(!showSearchComp)
