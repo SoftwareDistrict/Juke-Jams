@@ -2,34 +2,29 @@
 const axios = require('axios');
 // const { PORT } = process.env;
 // const { URL } = require('../config');
-//const URL = 'https://jukejams.herokuapp.com';
+// const URL = 'https://jukejams.herokuapp.com';
 // const PORT = 42368;
- const URL = 'http://localhost:8080'
+const URL = 'http://localhost:8080';
 
+const postCell = (cell) => axios.post(`${URL}/postCell`, cell);
 
-const getParty = (accessCode) => {
-  return axios.get(`${URL}/party/${accessCode}`)
-}
+const getInvitees = (id) => {
+  return axios.get(`${URL}/findinvites/${id}`);
+};
 
-const putVotes = (options) => {
-  return axios.put(`${URL}/vote/`, options);
-}
+const getCellBool = (id) => axios.post(`${URL}/checkCell`, {id: id});
 
-const postHost = (options) => {
-  return axios.post(`${URL}/host`, options)
-}
+const getParty = (accessCode) => axios.get(`${URL}/party/${accessCode}`);
 
-const postLogin = (options) => {
-  return axios.post(`${URL}/login`, options)
-}
+const putVotes = (options) => axios.put(`${URL}/vote/`, options);
 
-const getYouTube = (options) => {
-  return axios.get('https://www.googleapis.com/youtube/v3/search', options)
-}
+const postHost = (options) => axios.post(`${URL}/host`, options);
 
-const postPlaylist = (options, currentId) => {
-  return axios.post(`${URL}/playlist/${currentId}`, options);
-}
+const postLogin = (options) => axios.post(`${URL}/login`, options);
+
+const getYouTube = (options) => axios.get('https://www.googleapis.com/youtube/v3/search', options);
+
+const postPlaylist = (options, currentId) => axios.post(`${URL}/playlist/${currentId}`, options);
 
 // const putPlaylist = (options) => {
 //   console.log('inside the put function');
@@ -37,11 +32,14 @@ const postPlaylist = (options, currentId) => {
 // }
 
 module.exports = {
+  getInvitees,
   getParty,
   putVotes,
   postHost,
   postLogin,
   getYouTube,
   postPlaylist,
+  postCell,
+  getCellBool
   // putPlaylist
 };

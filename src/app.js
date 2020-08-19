@@ -5,7 +5,7 @@ import QueueEntry from './queueEntry.js';
 import GoogleLogin from 'react-google-login';
 import { } from './axiosRequests.js'
 import { YOUTUBE_API_KEY, OAUTH_CLIENT_ID} from '../config.js';
-import { getParty, putVotes, postHost, postLogin, getYouTube, postPlaylist } from './axiosRequests'
+import { getParty, putVotes, postHost, postLogin, getYouTube, postPlaylist, getCellBool, getInvitees } from './axiosRequests'
 import $ from 'jquery';
 import player from './youTubeScript.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -34,6 +34,7 @@ class App extends Component {
       admin: false,
       adminSub: false,
       cellFilled: false,
+      invitees: [],
     };
     this.clickHostParty = this.clickHostParty.bind(this);
     this.dropHostParty = this.dropHostParty.bind(this);
@@ -46,10 +47,12 @@ class App extends Component {
     this.voteUpdate = this.voteUpdate.bind(this);
     this.refreshParty = this.refreshParty.bind(this);
     this.deleteSong = this.deleteSong.bind(this);
+    this.grabInvitees = this.grabInvitees.bind(this);
   }
   // Toggles the initial player
   componentDidMount() {
     $('#player').toggle();
+    
   }
   // Handle's the access code
   handleFormChange(event) {
@@ -57,6 +60,27 @@ class App extends Component {
       accessCode: event.target.value,
     });
   }
+
+  // grab all users that have invitee status
+  grabInvitees() {
+    const { currentId, invitees } = this.state;
+    getInvitees(currentId)
+    .then(({ data }) => {
+      this.setState({ invitees: data.map(({ firstName, lastName, cell }) => {
+        return (
+          <li id='invitee'>
+            <div>{`${firstName} ${lastName}`}</div>
+            <div>{cell}</div>
+            <button id='invite-btn'>Invite</button>
+            <button id='decline-btn'>Decline</button>
+          </li>
+        );
+      }) }); 
+    })
+    .catch(err => console.error('could not get all invitees: ', err));
+  }
+
+
   // Join a Party click handler
   clickJoinParty() {
     const { accessCode, votes } = this.state;
@@ -178,6 +202,12 @@ class App extends Component {
           currentId: data.user.id,
           userPlaylist,
           video: userPlaylist[0] || video,
+        });
+      }).then(()=> {
+        getCellBool(this.state.currentId).then((result)=> {
+          this.setState(
+            {cellFilled: result.data}
+          );
         });
       });
   }
@@ -310,7 +340,7 @@ class App extends Component {
       admin,
       adminSub,
       cellFilled,
-      
+      invitees
     } = this.state;
     window.accessCode = accessCode;
   //if hostParty is clicked, render the Party Page
@@ -330,7 +360,7 @@ class App extends Component {
           adminSub={adminSub}
           videos={videos}
           searchHandler={this.searchHandler}
-  
+          invitees={invitees}
         />
       );
     }
@@ -353,7 +383,7 @@ class App extends Component {
 
     // before we hit the user page, need to check if user has cellphone field filled out
      if (!cellFilled) {
-       return <Cell />
+       return <Cell currentId={currentId}/>
 
      }
 
