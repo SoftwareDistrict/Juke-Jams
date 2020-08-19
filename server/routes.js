@@ -1,7 +1,7 @@
 // Router
 require('dotenv').config();
 const { TWL_CELL, ACC_SID_TWL, AUTH_TOK_TWL } = require('../config.js');
-const { Router } = require('express');
+const { Router } = require('express'); 
 const router = Router();
 const client = require('twilio')(ACC_SID_TWL, AUTH_TOK_TWL); 
 const {
@@ -27,6 +27,7 @@ router.post('/invites', (req, res) => {
 
 //Login route
 router.post('/login', async (req, res) => {
+  console.log(req.body);
   const user = await User.findOne({ where: { email: req.body.email } })
 
   if (user === null) {
@@ -44,8 +45,9 @@ router.post('/login', async (req, res) => {
         return;
       }
     }
-    res.send({ user });
-  }
+   res.send({ user });
+ }
+ 
 });
 
 // Update votes
