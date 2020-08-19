@@ -33,7 +33,7 @@ class App extends Component {
       votes: {}, 
       admin: false,
       adminSub: false,
-      cellFilled: false
+      cellFilled: false,
     };
     this.clickHostParty = this.clickHostParty.bind(this);
     this.dropHostParty = this.dropHostParty.bind(this);
@@ -309,7 +309,8 @@ class App extends Component {
       votes,
       admin,
       adminSub,
-      cellFilled
+      cellFilled,
+      
     } = this.state;
     window.accessCode = accessCode;
   //if hostParty is clicked, render the Party Page
