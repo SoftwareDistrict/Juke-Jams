@@ -1,9 +1,10 @@
 // Router
 require('dotenv').config();
+const twilio = require('twilio');
 const { TWL_CELL, ACC_SID_TWL, AUTH_TOK_TWL } = require('../config.js');
 const { Router } = require('express'); 
 const router = Router();
-const client = require('twilio')(ACC_SID_TWL, AUTH_TOK_TWL); 
+const client = new twilio(ACC_SID_TWL, AUTH_TOK_TWL); 
 const {
     Playlist,
     PlaylistSong,
