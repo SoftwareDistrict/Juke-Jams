@@ -14,7 +14,6 @@ const {
     PartySongUser,
     Invitee
   } = require('../db/database.js');
-const { InvalidConnectionError } = require('sequelize/types');
 
 // SEND ACCESS CODE
 router.post('/invites', (req, res) => {
