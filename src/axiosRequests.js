@@ -12,7 +12,7 @@ const getInvitees = (id) => {
   return axios.get(`${URL}/findinvites/${id}`);
 };
 
-const getCellBool = (id) => axios.post(`${URL}/checkCell`, {id: id});
+const getCellBoolAndCellNum = (id) => axios.post(`${URL}/checkCell`, {id: id});
 
 const getParty = (accessCode) => axios.get(`${URL}/party/${accessCode}`);
 
@@ -40,6 +40,6 @@ module.exports = {
   getYouTube,
   postPlaylist,
   postCell,
-  getCellBool
+  getCellBoolAndCellNum
   // putPlaylist
 };

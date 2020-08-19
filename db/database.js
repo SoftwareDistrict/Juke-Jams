@@ -23,6 +23,15 @@ const User = sequelize.define('User', {
   },
 });
 
+const Invitee = sequelize.define('User', {
+  id_host: Sequelize.INTEGER,
+  id_user: Sequelize.INTEGER,
+  admin_status: Sequelize.STRING,
+  user_firstName: Sequelize.STRING,
+  user_lastName: Sequelize.STRING,
+  user_cell: Sequelize.TEXT,
+});
+
 const Song = sequelize.define('Song', {
   url: {
     type: Sequelize.STRING,
@@ -184,6 +193,7 @@ sequelize.query('USE greenfield')
       },
     });
 
+    Invitee.sync({ force: true });
     Song.sync({ force: true });
     User.sync({ force: true })
       .then(() => {
