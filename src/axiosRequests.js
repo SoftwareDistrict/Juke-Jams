@@ -8,6 +8,10 @@ const URL = 'http://localhost:8080';
 
 const postCell = (cell) => axios.post(`${URL}/postCell`, cell);
 
+const getInvitees = (id) => {
+  return axios.get(`${URL}/findinvites/${id}`);
+};
+
 const getCellBool = (id) => axios.post(`${URL}/checkCell`, {id: id});
 
 const getParty = (accessCode) => axios.get(`${URL}/party/${accessCode}`);
@@ -28,6 +32,7 @@ const postPlaylist = (options, currentId) => axios.post(`${URL}/playlist/${curre
 // }
 
 module.exports = {
+  getInvitees,
   getParty,
   putVotes,
   postHost,

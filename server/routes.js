@@ -1,18 +1,40 @@
-// Router
-const { Router } = require('express');
-
-const router = Router();
-// const { where } = require('sequelize/types');
-const {
-  Playlist,
-  PlaylistSong,
-  User,
-  Song,
-  Party,
-  PartySongUser,
-} = require('../db/database.js');
-
 // Login route
+require('dotenv').config();
+const twilio = require('twilio');
+const { TWL_CELL, ACC_SID_TWL, AUTH_TOK_TWL } = require('../config.js');
+const { Router } = require('express'); 
+const router = Router();
+const client = new twilio(ACC_SID_TWL, AUTH_TOK_TWL); 
+const {
+    Playlist,
+    PlaylistSong,
+    User,
+    Song,
+    Party,
+    PartySongUser,
+    Invitee
+  } = require('../db/database.js');
+
+// SEND ACCESS CODE
+router.post('/invites', (req, res) => {
+  const { msg, cell } = req.body;
+  client.messages.create({ 
+    body: msg, 
+    from: TWL_CELL,       
+    to: cell
+  }) 
+  .then(message => console.log(message.sid)) 
+  .done();
+});
+
+// GET PHONE NUMBER
+router.get('/findinvites/:id', (req, res) => {
+  const hostId = req.params.id;
+  Invitee.findAll({ where: { id_host: hostId } })
+});
+
+
+//Login route
 router.post('/login', async (req, res) => {
   console.log(req.body);
   const user = await User.findOne({ where: { email: req.body.email } });
