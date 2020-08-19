@@ -5,7 +5,7 @@ import QueueEntry from './queueEntry.js';
 import GoogleLogin from 'react-google-login';
 import { } from './axiosRequests.js'
 import { YOUTUBE_API_KEY, OAUTH_CLIENT_ID} from '../config.js';
-import { getInvitees, getParty, putVotes, postHost, postLogin, getYouTube, postPlaylist } from './axiosRequests'
+import { getParty, putVotes, postHost, postLogin, getYouTube, postPlaylist, getCellBool, getInvitees } from './axiosRequests'
 import $ from 'jquery';
 import player from './youTubeScript.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -52,6 +52,7 @@ class App extends Component {
   // Toggles the initial player
   componentDidMount() {
     $('#player').toggle();
+    
   }
   // Handle's the access code
   handleFormChange(event) {
@@ -201,6 +202,12 @@ class App extends Component {
           currentId: data.user.id,
           userPlaylist,
           video: userPlaylist[0] || video,
+        });
+      }).then(()=> {
+        getCellBool(this.state.currentId).then((result)=> {
+          this.setState(
+            {cellFilled: result.data}
+          );
         });
       });
   }
@@ -376,7 +383,7 @@ class App extends Component {
 
     // before we hit the user page, need to check if user has cellphone field filled out
      if (!cellFilled) {
-       return <Cell />
+       return <Cell currentId={currentId}/>
 
      }
 
