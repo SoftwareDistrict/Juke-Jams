@@ -29,7 +29,9 @@ class App extends Component {
       nextVideo: {},
       accessCode: null,
       nowPlaying: null,
-      votes: {}
+      votes: {}, 
+      admin: false,
+      adminSub: false,
     };
     this.clickHostParty = this.clickHostParty.bind(this);
     this.dropHostParty = this.dropHostParty.bind(this);
@@ -82,6 +84,7 @@ class App extends Component {
   }
   // Host a party click handler
   clickHostParty() {
+    this.setState({admin: true});
     if (this.state.video.id) {
       window.ytPlayer.loadVideoById(this.state.video.id.videoId)
       $('#player').toggle();
@@ -96,6 +99,7 @@ class App extends Component {
   }
   // Drop party click handler
   dropHostParty() {
+    this.setState({admin: false});
     this.refreshParty(false);
     if (this.state.hostPartyClicked) {
       $('#player').toggle();
@@ -299,7 +303,9 @@ class App extends Component {
       currentId,
       nowPlaying,
       partyPlaylist,
-      votes
+      votes,
+      admin,
+      adminSub
     } = this.state;
     window.accessCode = accessCode;
   //if hostParty is clicked, render the Party Page
@@ -315,6 +321,11 @@ class App extends Component {
           voteUpdate={this.voteUpdate}
           nowPlaying={nowPlaying}
           votes={votes}
+          admin={admin}
+          adminSub={adminSub}
+          videos={videos}
+          searchHandler={this.searchHandler}
+  
         />
       );
     }
