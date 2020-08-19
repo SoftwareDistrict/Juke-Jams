@@ -1,6 +1,9 @@
 // Router
+require('dotenv').config();
+const { TWL_CELL, ACC_SID_TWL, AUTH_TOK_TWL } = require('../config.js');
 const { Router } = require('express');
 const router = Router();
+const client = require('twilio')(ACC_SID_TWL, AUTH_TOK_TWL); 
 const {
     Playlist,
     PlaylistSong,
@@ -9,6 +12,18 @@ const {
     Party,
     PartySongUser
   } = require('../db/database.js');
+
+// send access code
+router.post('/invites', (req, res) => {
+  const { msg, cell } = req.body;
+  client.messages .create({ 
+    body: msg, 
+    from: TWL_CELL,       
+    to: cell
+  }) 
+  .then(message => console.log(message.sid)) 
+  .done();
+});
 
 //Login route
 router.post('/login', async (req, res) => {
