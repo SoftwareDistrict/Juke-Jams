@@ -1,6 +1,6 @@
 // require('dotenv').config();
 const Sequelize = require('sequelize');
-const { DB_NAME, DB_USER, DB_PASS, DB_HOST, DB_PORT } = require('../config')
+const { DB_NAME, DB_USER, DB_PASS, DB_HOST, DB_PORT } = require('../config') 
 
 // DB connection
 const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
@@ -14,10 +14,11 @@ const User = sequelize.define('User', {
   firstName: Sequelize.STRING,
   lastName: Sequelize.STRING,
   hostedPartyId: Sequelize.INTEGER,
+  cell: Sequelize.TEXT,
   email: {
 		type: Sequelize.STRING,
 		unique: true
-	},
+  },
 });
 
 const Song = sequelize.define('Song', {
@@ -105,6 +106,7 @@ sequelize
       firstName: Sequelize.STRING,
       lastName: Sequelize.STRING,
       hostedPartyId: Sequelize.INTEGER,
+      cell: Sequelize.TEXT,
       email: Sequelize.STRING,
     });
 

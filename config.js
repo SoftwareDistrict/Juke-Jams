@@ -10,7 +10,6 @@ const DB_PASS = '';
 // const DB_HOST = 'jukey-db.c0ovotldczny.us-east-1.rds.amazonaws.com';
 const DB_HOST = 'localhost';
 const DB_PORT = 3306;
-
 module.exports = {
   OAUTH_CLIENT_ID,
   YOUTUBE_API_KEY,

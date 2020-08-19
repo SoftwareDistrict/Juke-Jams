@@ -4,13 +4,14 @@ import PartyPage from './partyPage.js';
 import QueueEntry from './queueEntry.js';
 import GoogleLogin from 'react-google-login';
 import { } from './axiosRequests.js'
-import { YOUTUBE_API_KEY, OAUTH_CLIENT_ID } from '../config.js';
+import { YOUTUBE_API_KEY, OAUTH_CLIENT_ID} from '../config.js';
 import { getParty, putVotes, postHost, postLogin, getYouTube, postPlaylist } from './axiosRequests'
 import $ from 'jquery';
 import player from './youTubeScript.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Button, Jumbotron, OverlayTrigger, Popover } from 'react-bootstrap';
 import Landing from './landing.js';
+import Cell from './cell.js'
 class App extends Component {
   constructor(props) {
     super(props);
@@ -32,6 +33,7 @@ class App extends Component {
       votes: {}, 
       admin: false,
       adminSub: false,
+      cellFilled: false,
     };
     this.clickHostParty = this.clickHostParty.bind(this);
     this.dropHostParty = this.dropHostParty.bind(this);
@@ -148,6 +150,7 @@ class App extends Component {
   }
   // Google auth response
   responseGoogle(response) {
+    console.log(response, 'gooooogle')
       postLogin({
         firstName: response.profileObj.givenName,
         lastName: response.profileObj.familyName,
@@ -305,7 +308,9 @@ class App extends Component {
       partyPlaylist,
       votes,
       admin,
-      adminSub
+      adminSub,
+      cellFilled,
+      
     } = this.state;
     window.accessCode = accessCode;
   //if hostParty is clicked, render the Party Page
@@ -341,8 +346,18 @@ class App extends Component {
           cookiePolicy={"single_host_origin"}
         />
       );
+
+
       return <Landing login={login} />;
     }
+
+    // before we hit the user page, need to check if user has cellphone field filled out
+     if (!cellFilled) {
+       return <Cell />
+
+     }
+
+
     // Renders the access code route and user page upon login
     return (
   <Container style={{ display: "flex", justifyContent: 'center', border: "8px solid #cecece" }}>
