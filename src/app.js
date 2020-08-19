@@ -5,7 +5,7 @@ import QueueEntry from './queueEntry.js';
 import GoogleLogin from 'react-google-login';
 import { } from './axiosRequests.js'
 import { YOUTUBE_API_KEY, OAUTH_CLIENT_ID} from '../config.js';
-import { getParty, putVotes, postHost, postLogin, getYouTube, postPlaylist, getCellBool, getInvitees } from './axiosRequests'
+import { getParty, putVotes, postHost, postLogin, getYouTube, postPlaylist, getCellBoolAndCellNum, getInvitees } from './axiosRequests'
 import $ from 'jquery';
 import player from './youTubeScript.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -35,6 +35,7 @@ class App extends Component {
       adminSub: false,
       cellFilled: false,
       invitees: [],
+      userCell: null,
     };
     this.clickHostParty = this.clickHostParty.bind(this);
     this.dropHostParty = this.dropHostParty.bind(this);
@@ -204,9 +205,10 @@ class App extends Component {
           video: userPlaylist[0] || video,
         });
       }).then(()=> {
-        getCellBool(this.state.currentId).then((result)=> {
+        getCellBoolAndCellNum(this.state.currentId).then((result)=> {
+          console.log(212, result.data);
           this.setState(
-            {cellFilled: result.data}
+            {cellFilled: result.data.bool, userCell: result.data.cell}
           );
         });
       });
@@ -417,6 +419,7 @@ class App extends Component {
           accessCode={accessCode}
           currentUser={currentUser}
           deleteSong={this.deleteSong}
+          userCell={this.state.userCell}
         />
     </Col>
   </Row>
