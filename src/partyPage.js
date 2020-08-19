@@ -1,5 +1,5 @@
 // import React from 'react';
-import React, { useState } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import Queue from './queue.js';
 import VideoPlayer from './videoPlayer.js';
 import Button from 'react-bootstrap/Button';
@@ -25,11 +25,13 @@ const PartyPage = ({
   admin,
   adminSub,
   videos,
-  searchHandler
+  searchHandler,
+  invitees
 }) => {
 
 
   const [showSearchComp, setShowSearchComp] = useState(false);
+  const [ showInvitees, setShowInvitees ] = useState(false);
 
 
   const buttonText = hostPartyClicked ? 'Drop Hosted Party' : 'Leave Party';
@@ -39,6 +41,10 @@ const PartyPage = ({
       <VideoPlayer video={video} nowPlaying={nowPlaying} />
 
       {admin ? <div>
+        <div>
+          <ul id='inviteesDisplay'>{invitees}</ul>
+          <button onClick={setShowInvitees(!showInvitees)}>Close Invites</button>
+        </div>
         <button onClick={()=>{
           console.log(showSearchComp)
           setShowSearchComp(!showSearchComp)

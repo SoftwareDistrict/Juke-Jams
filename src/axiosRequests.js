@@ -6,6 +6,9 @@ const axios = require('axios');
 // const PORT = 42368;
  const URL = 'http://localhost:8080'
 
+const getInvitees = (id) => {
+  return axios.get(`${URL}/findinvites/${id}`);
+};
 
 const getParty = (accessCode) => {
   return axios.get(`${URL}/party/${accessCode}`)
@@ -37,6 +40,7 @@ const postPlaylist = (options, currentId) => {
 // }
 
 module.exports = {
+  getInvitees,
   getParty,
   putVotes,
   postHost,

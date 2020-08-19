@@ -1,14 +1,38 @@
 // Router
+require('dotenv').config();
+const { TWL_CELL, ACC_SID_TWL, AUTH_TOK_TWL } = require('../config.js');
 const { Router } = require('express'); 
 const router = Router();
+const client = require('twilio')(ACC_SID_TWL, AUTH_TOK_TWL); 
 const {
     Playlist,
     PlaylistSong,
     User,
     Song,
     Party,
-    PartySongUser
+    PartySongUser,
+    Invitee
   } = require('../db/database.js');
+const { InvalidConnectionError } = require('sequelize/types');
+
+// SEND ACCESS CODE
+router.post('/invites', (req, res) => {
+  const { msg, cell } = req.body;
+  client.messages.create({ 
+    body: msg, 
+    from: TWL_CELL,       
+    to: cell
+  }) 
+  .then(message => console.log(message.sid)) 
+  .done();
+});
+
+// GET PHONE NUMBER
+router.get('/findinvites/:id', (req, res) => {
+  const hostId = req.params.id;
+  Invitee.findAll({ where: { id_host: hostId } })
+});
+
 
 //Login route
 router.post('/login', async (req, res) => {
