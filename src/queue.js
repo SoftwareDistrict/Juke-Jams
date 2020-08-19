@@ -7,9 +7,11 @@ const Queue = ({ partyPlaylist, listClickHandler, sortPlaylist, voteUpdate, vote
   return (
     <ListGroup style={{ padding: "5%" }}>
     <div>
-      {partyPlaylist.map((video) => (
-        <QueueEntry video={video} listClickHandler={listClickHandler} sortPlaylist={sortPlaylist} voteUpdate={voteUpdate} votes={votes} />
-      ))}
+      {partyPlaylist.map((video) => {
+        console.log(video)
+       return <QueueEntry video={video} listClickHandler={listClickHandler} sortPlaylist={sortPlaylist} voteUpdate={voteUpdate} votes={votes} />
+}
+      )}
     </div>
     </ListGroup>
   );
