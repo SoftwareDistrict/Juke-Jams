@@ -11,6 +11,10 @@ const DB_PASS = '';
 const DB_HOST = 'localhost';
 const DB_PORT = 3306;
 
+const TWL_CELL = '+12067410219';
+const ACC_SID_TWL = 'AC1be957551e7e0e67acea7129a4cb6d82';
+const AUTH_TOK_TWL = 'fe800c01b015b253d160d247a9946491';
+
 module.exports = {
   OAUTH_CLIENT_ID,
   YOUTUBE_API_KEY,
@@ -21,4 +25,7 @@ module.exports = {
   DB_USER,
   DB_PASS,
   DB_PORT,
+  TWL_CELL,
+  ACC_SID_TWL,
+  AUTH_TOK_TWL
 };

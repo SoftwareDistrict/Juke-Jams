@@ -385,7 +385,20 @@ class App extends Component {
 
     // before we hit the user page, need to check if user has cellphone field filled out
      if (!cellFilled) {
-       return <Cell currentId={currentId}/>
+       return <Cell 
+       currentId={currentId}
+       clickHostParty={this.clickHostParty}
+          clickJoinParty={this.clickJoinParty}
+          videos={videos}
+          searchHandler={this.searchHandler}
+          listClickHandler={this.listClickHandler}
+          userPlaylist={userPlaylist}
+          handleFormChange={this.handleFormChange}
+          accessCode={accessCode}
+          currentUser={currentUser}
+          deleteSong={this.deleteSong}
+          cellFilled={cellFilled}
+       />
 
      }
 
