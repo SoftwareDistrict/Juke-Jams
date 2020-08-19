@@ -14,10 +14,11 @@ const User = sequelize.define('User', {
   firstName: Sequelize.STRING,
   lastName: Sequelize.STRING,
   hostedPartyId: Sequelize.INTEGER,
+  cell: Sequelize.TEXT,
   email: {
 		type: Sequelize.STRING,
 		unique: true
-	},
+  },
 });
 
 const Song = sequelize.define('Song', {
@@ -105,6 +106,7 @@ sequelize
       firstName: Sequelize.STRING,
       lastName: Sequelize.STRING,
       hostedPartyId: Sequelize.INTEGER,
+      cell: Sequelize.TEXT,
       email: Sequelize.STRING,
     });
 

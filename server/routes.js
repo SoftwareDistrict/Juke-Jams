@@ -12,6 +12,7 @@ const {
 
 //Login route
 router.post('/login', async (req, res) => {
+  console.log(req.body);
   const user = await User.findOne({ where: { email: req.body.email } })
 
   if (user === null) {
@@ -29,8 +30,9 @@ router.post('/login', async (req, res) => {
         return;
       }
     }
-    res.send({ user });
-  }
+   res.send({ user });
+ }
+ 
 });
 
 // Update votes
