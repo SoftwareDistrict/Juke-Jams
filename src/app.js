@@ -353,7 +353,7 @@ class App extends Component {
 
     // before we hit the user page, need to check if user has cellphone field filled out
      if (!cellFilled) {
-       return <Cell />
+       return <Cell currentId={currentId}/>
 
      }
 
