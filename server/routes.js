@@ -10,13 +10,15 @@ const {
     User,
     Song,
     Party,
-    PartySongUser
+    PartySongUser,
+    Invitee
   } = require('../db/database.js');
+const { InvalidConnectionError } = require('sequelize/types');
 
-// send access code
+// SEND ACCESS CODE
 router.post('/invites', (req, res) => {
   const { msg, cell } = req.body;
-  client.messages .create({ 
+  client.messages.create({ 
     body: msg, 
     from: TWL_CELL,       
     to: cell
@@ -24,6 +26,13 @@ router.post('/invites', (req, res) => {
   .then(message => console.log(message.sid)) 
   .done();
 });
+
+// GET PHONE NUMBER
+router.get('/findinvites/:id', (req, res) => {
+  const hostId = req.params.id;
+  Invitee.findAll({ where: { id_host: hostId } })
+});
+
 
 //Login route
 router.post('/login', async (req, res) => {
