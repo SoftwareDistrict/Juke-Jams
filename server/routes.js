@@ -2,6 +2,7 @@
 const { Router } = require('express');
 
 const router = Router();
+// const { where } = require('sequelize/types');
 const {
   Playlist,
   PlaylistSong,
@@ -35,25 +36,42 @@ router.post('/login', async (req, res) => {
     res.send({ user });
   }
 });
-// Project.update(
-//   { title: 'a very different title now' },
-//   { where: { _id: 1 } },
-// );
 
-router.post('/cell', async (req, res) => {
+router.post('/postCell', async (req, res) => {
   console.log(req.body);
   const { id, cell } = req.body;
-  User.update(
-    { cell }, { where: { id } },
-  )
-    .then((result) => {
-      console.log(result);
-      res.send(result);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.send(err);
-    });
+  if (cell.length === 10) {
+    User.update(
+      { cell }, { where: { id } },
+    )
+      .then((result) => {
+        console.log(result);
+        res.send(result);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.send(err);
+      });
+  } else {
+    res.status(500);
+    res.send('post request for cell did not work');
+  }
+});
+
+router.post('/checkCell', async (req, res) => {
+  console.log(56, req.body);
+  const { id } = req.body;
+  User.findOne(
+    { where: { id } },
+  ).then((data) => {
+    // console.log('rowwwwwwww', row.dataValues);
+    const row = data.dataValues;
+    if (row.cell === null) {
+      res.send(false);
+    } else {
+      res.send(true);
+    }
+  });
 });
 
 // Update votes

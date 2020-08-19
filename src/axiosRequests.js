@@ -6,7 +6,9 @@ const axios = require('axios');
 // const PORT = 42368;
 const URL = 'http://localhost:8080';
 
-const postCell = (cell) => axios.post(`${URL}/cell`, cell);
+const postCell = (cell) => axios.post(`${URL}/postCell`, cell);
+
+const getCellBool = (id) => axios.post(`${URL}/checkCell`, {id: id});
 
 const getParty = (accessCode) => axios.get(`${URL}/party/${accessCode}`);
 
@@ -33,5 +35,6 @@ module.exports = {
   getYouTube,
   postPlaylist,
   postCell,
+  getCellBool
   // putPlaylist
 };
