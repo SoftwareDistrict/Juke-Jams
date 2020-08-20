@@ -27,5 +27,5 @@ module.exports = {
   DB_PORT,
   TWL_CELL,
   ACC_SID_TWL,
-  AUTH_TOK_TWL,
+  AUTH_TOK_TWL
 };

@@ -28,10 +28,20 @@ router.post('/invites', (req, res) => {
 });
 
 // GET PHONE NUMBER
-router.get('/findinvites/:id', (req, res) => {
-  const hostId = req.params.id;
-  Invitee.findAll({ where: { id_host: hostId } })
-});
+// router.get('/findinvites/:id', (req, res) => {
+//   const hostId = req.params.id;
+//   Invitee.findAll({ where: { id_host: hostId } })
+//   .then((response) => res.send(response.data))
+//   .catch(err => console.error('could not get all invitees: ', err));
+// });
+
+// ADD AN INVITEE
+// router.post('addInvitee', (req, res) => {
+//   const optionsObj = req.body;
+//   Invitee.create(optionsObj)
+//   .then(() => console.log('added that Sub BABYYYY'))
+//   .catch((err) => console.error('that did not add the sub: ', err));
+// });
 
 
 //Login route
@@ -89,9 +99,11 @@ router.post('/checkCell', async (req, res) => {
     // console.log('rowwwwwwww', row.dataValues);
     const row = data.dataValues;
     if (row.cell === null) {
-      res.send(false);
+      res.send({ bool: false, cell: null });
+      // res.send(false);
     } else {
-      res.send(true);
+      res.send({ bool: true, cell: row.cell });
+      // res.send(true);
     }
   });
 });
@@ -179,6 +191,9 @@ router.post('/host', async (req, res) => {
     for (let i = 0; i < 5; i++) {
       accessCode += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
+    accessCode += accessCode.concat(id);
+    console.log('user: ', user);
+    console.log('accessCode: ', accessCode);
     Party.create({ hostId: id, accessCode })
       .then(({ dataValues }) => {
         user.update({ hostedPartyId: dataValues.id });

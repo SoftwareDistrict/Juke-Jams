@@ -3,9 +3,8 @@ import UserPage from './userPage.js';
 import PartyPage from './partyPage.js';
 import QueueEntry from './queueEntry.js';
 import GoogleLogin from 'react-google-login';
-import { } from './axiosRequests.js'
 import { YOUTUBE_API_KEY, OAUTH_CLIENT_ID} from '../config.js';
-import { getParty, putVotes, postHost, postLogin, getYouTube, postPlaylist, getCellBool, getInvitees } from './axiosRequests'
+import { getParty, putVotes, postHost, postLogin, getYouTube, postPlaylist, getCellBoolAndCellNum, getInvitees, addInvitee } from './axiosRequests'
 import $ from 'jquery';
 import player from './youTubeScript.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -35,6 +34,7 @@ class App extends Component {
       adminSub: false,
       cellFilled: false,
       invitees: [],
+      userCell: null,
     };
     this.clickHostParty = this.clickHostParty.bind(this);
     this.dropHostParty = this.dropHostParty.bind(this);
@@ -47,7 +47,8 @@ class App extends Component {
     this.voteUpdate = this.voteUpdate.bind(this);
     this.refreshParty = this.refreshParty.bind(this);
     this.deleteSong = this.deleteSong.bind(this);
-    this.grabInvitees = this.grabInvitees.bind(this);
+    // this.grabInvitees = this.grabInvitees.bind(this);
+    // this.addASub = this.addASub.bind(this);
   }
   // Toggles the initial player
   componentDidMount() {
@@ -62,24 +63,40 @@ class App extends Component {
   }
 
   // grab all users that have invitee status
-  grabInvitees() {
-    const { currentId, invitees } = this.state;
-    getInvitees(currentId)
-    .then(({ data }) => {
-      this.setState({ invitees: data.map(({ firstName, lastName, cell }) => {
-        return (
-          <li id='invitee'>
-            <div>{`${firstName} ${lastName}`}</div>
-            <div>{cell}</div>
-            <button id='invite-btn'>Invite</button>
-            <button id='decline-btn'>Decline</button>
-          </li>
-        );
-      }) }); 
-    })
-    .catch(err => console.error('could not get all invitees: ', err));
-  }
+  // grabInvitees() {
+    // console.log('hajshdlfkjash;;vab.jls;voebvje')
+    // const { accessCode } = this.state;
+    // getInvitees(accessCode[accessCode.length - 1])
+    // .then(({ data }) => {
+    //   this.setState({ invitees: data.map(({ user_firstName, user_lastName, user_cell }) => {
+    //     return (
+    //       <li id='invitee'>
+    //         <div>{`${user_firstName} ${user_lastName}`}</div>
+    //         <div>{user_cell}</div>
+    //         <button id='invite-btn'>Invite</button>
+    //         <button id='decline-btn'>Decline</button>
+    //       </li>
+    //     );
+    //   }) }); 
+    // })
+    // .catch(err => console.error('could not get all invitees: ', err));
+  // }
 
+  // addASub() {
+
+    // console.log('ayayayaa')
+    // const { accessCode, userCell, currentId, currentUser } = this.state;
+    // const options = {
+    //   id_host: accessCode[accessCode.length - 1],
+    //   id_user: currentId,
+    //   user_firstName: currentUser.firrstName,
+    //   user_lastName: currentUser.lastName,
+    //   cell: userCell,
+    // };
+    // addInvitee(options)
+    // .then(() => console.log('this is in app.js for add sub'))
+    // .catch((err) => console.error('this is in app.js for add sub: ', err));
+  // }
 
   // Join a Party click handler
   clickJoinParty() {
@@ -204,9 +221,10 @@ class App extends Component {
           video: userPlaylist[0] || video,
         });
       }).then(()=> {
-        getCellBool(this.state.currentId).then((result)=> {
+        getCellBoolAndCellNum(this.state.currentId).then((result)=> {
+          console.log(212, result.data);
           this.setState(
-            {cellFilled: result.data}
+            {cellFilled: result.data.bool, userCell: result.data.cell}
           );
         });
       });
@@ -361,6 +379,7 @@ class App extends Component {
           videos={videos}
           searchHandler={this.searchHandler}
           invitees={invitees}
+          // addASub={this.addASub}
         />
       );
     }
@@ -383,7 +402,20 @@ class App extends Component {
 
     // before we hit the user page, need to check if user has cellphone field filled out
      if (!cellFilled) {
-       return <Cell currentId={currentId}/>
+       return <Cell 
+       currentId={currentId}
+       clickHostParty={this.clickHostParty}
+          clickJoinParty={this.clickJoinParty}
+          videos={videos}
+          searchHandler={this.searchHandler}
+          listClickHandler={this.listClickHandler}
+          userPlaylist={userPlaylist}
+          handleFormChange={this.handleFormChange}
+          accessCode={accessCode}
+          currentUser={currentUser}
+          deleteSong={this.deleteSong}
+          cellFilled={cellFilled}
+       />
 
      }
 
@@ -404,6 +436,7 @@ class App extends Component {
           accessCode={accessCode}
           currentUser={currentUser}
           deleteSong={this.deleteSong}
+          userCell={this.state.userCell}
         />
     </Col>
   </Row>
