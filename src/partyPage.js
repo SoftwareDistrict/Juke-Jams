@@ -25,8 +25,9 @@ const PartyPage = ({
   videos,
   searchHandler,
   userCell,
-  // invitees,
-  addASub
+  invitees,
+  addASub,
+  grabInvitees
 }) => {
 
   const [showSearchComp, setShowSearchComp] = useState(false);
@@ -38,6 +39,9 @@ const PartyPage = ({
       <div style={{ color: "black", backgroundColor: "white", fontFamily: "Big Shoulders Display", textalign: "center", fontSize: 20, fontWeight: 60, textAlign: "center", padding: "10px 20px" }}>
         Your Party Access Code is: {`${accessCode}`}</div>
       <div>
+        <Button onClick={() => grabInvitees()}>grab</Button>
+      </div>
+      <div>
         <Button id="subscirbe" onClick={() => addASub()}>Subscribe</Button>
       </div>
       <VideoPlayer video={video} nowPlaying={nowPlaying} />
@@ -46,7 +50,7 @@ const PartyPage = ({
           {/* <div>
             <ul id='inviteesDisplay'>{invitees}</ul>
           </div> */}
-          {/* <button onClick={setShowInvitees(!showInvitees)}>Invites</button> */}
+          {/* <Button onClick={setShowInvitees(!showInvitees)}>Invites</Button> */}
           <div>
             <Button onClick={()=> setShowSearchComp(!showSearchComp)}>Make a Search</Button><br/>
           </div>
