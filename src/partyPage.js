@@ -26,8 +26,9 @@ const PartyPage = ({
   adminSub,
   videos,
   searchHandler,
-  invitees,
-  // addASub
+  userCell,
+  // invitees,
+  addASub
 }) => {
 
 
@@ -37,9 +38,10 @@ const PartyPage = ({
 
   const buttonText = hostPartyClicked ? 'Drop Hosted Party' : 'Leave Party';
   return (
-      <div>
+    <div>
       <div style={{ color: "black", backgroundColor: "white", fontFamily: "Big Shoulders Display", textalign: "center", fontSize: 20, fontWeight: 60, textAlign: "center", padding: "10px 20px" }}>
         Your Party Access Code is: {`${accessCode}`}</div>
+      <button id="subscirbe" onClick={() => addASub()}>Subscribe</button>
       <VideoPlayer video={video} nowPlaying={nowPlaying} />
       {admin ? (
         <div>
