@@ -25,8 +25,9 @@ const PartyPage = ({
   videos,
   searchHandler,
   userCell,
-  // invitees,
-  addASub
+  invitees,
+  addASub,
+  grabInvitees
 }) => {
 
   const [showSearchComp, setShowSearchComp] = useState(false);
@@ -46,7 +47,7 @@ const PartyPage = ({
           {/* <div>
             <ul id='inviteesDisplay'>{invitees}</ul>
           </div> */}
-          {/* <button onClick={setShowInvitees(!showInvitees)}>Invites</button> */}
+          {/* <Button onClick={setShowInvitees(!showInvitees)}>Invites</Button> */}
           <div>
             <Button onClick={()=> setShowSearchComp(!showSearchComp)}>Make a Search</Button><br/>
           </div>

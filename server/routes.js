@@ -27,13 +27,19 @@ const {
 //   .done();
 // });
 
-// // GET PHONE NUMBER
-// router.get('/findinvites/:id', (req, res) => {
-//   const hostId = req.params.id;
-//   Invitee.findAll({ where: { id_host: hostId } })
-//   .then((response) => res.send(response.data))
-//   .catch(err => console.error('could not get all invitees: ', err));
-// });
+// GET PHONE NUMBER
+router.get('/findinvites/:id', async(req, res) => {
+  const hostId = req.params.id;
+  await Invitee.findAll({ where: { id_host: hostId } })
+  .then((response) => {
+    console.log('response: ', response);
+    res.status(200).send(response);
+  })
+  .catch(err => {
+    res.sendStatus(500);
+    console.error('could not get all invitees: ', err);
+  });
+});
 
 // ADD AN INVITEE
 router.post('/subscribe', async (req, res) => {

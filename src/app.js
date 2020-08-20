@@ -33,7 +33,7 @@ class App extends Component {
       admin: false,
       adminSub: false,
       cellFilled: false,
-      // invitees: [],
+      invitees: [],
       userCell: null,
       cellText: null,
     };
@@ -48,7 +48,7 @@ class App extends Component {
     this.voteUpdate = this.voteUpdate.bind(this);
     this.refreshParty = this.refreshParty.bind(this);
     this.deleteSong = this.deleteSong.bind(this);
-    // this.grabInvitees = this.grabInvitees.bind(this);
+    this.grabInvitees = this.grabInvitees.bind(this);
     this.addASub = this.addASub.bind(this);
     this.changeHandler = this.changeHandler.bind(this);
   }
@@ -66,24 +66,32 @@ class App extends Component {
   }
 
   // grab all users that have invitee status
-  // grabInvitees() {
-  //   console.log('hajshdlfkjash;;vab.jls;voebvje')
-  //   const { accessCode } = this.state;
-  //   getInvitees(accessCode[accessCode.length - 1])
-  //   .then(({ data }) => {
-  //     this.setState({ invitees: data.map(({ id_host, user_firstName, user_lastName, user_cell }) => {
-  //       return (
-  //         <li id='invitee' key={id_host}>
-  //           <div>{`${user_firstName} ${user_lastName}`}</div>
-  //           <div>{user_cell}</div>
-  //           <button id='invite-btn'>Invite</button>
-  //           <button id='decline-btn'>Decline</button>
-  //         </li>
-  //       );
-  //     }) }); 
-  //   })
-  //   .catch(err => console.error('could not get all invitees: ', err));
-  // }
+  grabInvitees() {
+    const { currentId } = this.state;
+    getInvitees(currentId)
+    .then((response) => {
+      console.log('daaaatatat: ', response);
+      console.log('BEFORE: ', this.state.invitees);
+      this.setState({ invitees: response.data.map(({
+        id_host,
+        id_user,
+        user_firstName,
+        user_lastName,
+        user_cell
+      }) => {
+        return (
+          <li id='invitee' key={id_user}>
+            <div>{`${user_firstName} ${user_lastName}`}</div>
+            <div>{user_cell}</div>
+            <Button id='invite-btn'>Invite</Button>
+            <Button id='decline-btn'>Decline</Button>
+          </li>
+        );
+      }) });
+      console.log('AFTER: ', this.state.invitees);
+    })
+    .catch(err => console.error('could not get all invitees: ', err));
+  }
 
   addASub() {
     const { accessCode, userCell, currentId, currentUser } = this.state;
@@ -140,6 +148,7 @@ class App extends Component {
         partyPlaylist: this.state.userPlaylist
       });
       this.toggleHost();
+      this.grabInvitees();
       this.refreshParty(true);
     }
   }
@@ -369,8 +378,8 @@ class App extends Component {
       adminSub,
       cellFilled,
       userCell,
-      cellText
-      // invitees
+      cellText,
+      invitees
     } = this.state;
     window.accessCode = accessCode;
   //if hostParty is clicked, render the Party Page
@@ -391,8 +400,9 @@ class App extends Component {
           videos={videos}
           searchHandler={this.searchHandler}
           userCell={userCell}
-          // invitees={invitees}
+          invitees={invitees}
           addASub={this.addASub}
+          grabInvitees={this.grabInvitees}
         />
       );
     }
@@ -420,10 +430,10 @@ class App extends Component {
           <label className='CellNumber'>Enter your cell number:</label>
           <input type="tel" id="phone" onChange={this.changeHandler} name="phone" />
           <small>Format: 5044567890</small><br/>
-          <button onClick={()=> {
+          <Button onClick={()=> {
             postCell({ id: currentId, cell: cellText })
             .then(() => this.setState({ cellFilled: true, userCell: cellText }))
-            }}>Submit</button>
+            }}>Submit</Button>
         </div>
       );
     } else {
@@ -443,6 +453,8 @@ class App extends Component {
                 currentUser={currentUser}
                 deleteSong={this.deleteSong}
                 userCell={userCell}
+                invitees={invitees}
+                grabInvitees={this.grabInvitees}
               />
           </Col>
         </Row>
