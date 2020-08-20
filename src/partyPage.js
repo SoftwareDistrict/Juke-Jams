@@ -6,8 +6,6 @@ import Button from 'react-bootstrap/Button';
 import SearchResultsParty from './searchResults'
 import SearchParty from './searchParty'
 
-
-
 // Party page
 const PartyPage = ({
   video,
@@ -31,21 +29,17 @@ const PartyPage = ({
   addASub
 }) => {
 
-
   const [showSearchComp, setShowSearchComp] = useState(false);
   // const [ showInvitees, setShowInvitees ] = useState(false);
- const onClick = () => {
-    console.log('userCell: ', userCell);
-  }
 
   const buttonText = hostPartyClicked ? 'Drop Hosted Party' : 'Leave Party';
   return (
     <div>
-      <button onClick={onClick}>CLICK MEEEE</button>
-
       <div style={{ color: "black", backgroundColor: "white", fontFamily: "Big Shoulders Display", textalign: "center", fontSize: 20, fontWeight: 60, textAlign: "center", padding: "10px 20px" }}>
         Your Party Access Code is: {`${accessCode}`}</div>
-      <button id="subscirbe" onClick={() => addASub()}>Subscribe</button>
+      <div>
+        <Button id="subscirbe" onClick={() => addASub()}>Subscribe</Button>
+      </div>
       <VideoPlayer video={video} nowPlaying={nowPlaying} />
       {admin ? (
         <div>
@@ -53,15 +47,17 @@ const PartyPage = ({
             <ul id='inviteesDisplay'>{invitees}</ul>
           </div> */}
           {/* <button onClick={setShowInvitees(!showInvitees)}>Invites</button> */}
-          <button onClick={()=> setShowSearchComp(!showSearchComp)}>Make a Search</button><br/>
+          <div>
+            <Button onClick={()=> setShowSearchComp(!showSearchComp)}>Make a Search</Button><br/>
+          </div>
           {showSearchComp ? (
             <div>
               <SearchParty searchHandler={searchHandler} />
               <SearchResultsParty videos={videos} listClickHandler={listClickHandler} userPlaylist={userPlaylist}/>
             </div>
-            ) : (
-              <div></div>
-            )}
+          ) : (
+            <div></div>
+          )}
           <Queue partyPlaylist={partyPlaylist} listClickHandler={listClickHandler} voteUpdate={voteUpdate} votes={votes} />
         </div>
       ) : (
