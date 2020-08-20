@@ -4,3 +4,7 @@ dist
 .npm
 .DS_Store
 .env
+<<<<<<< HEAD
+=======
+config.js
+>>>>>>> 823fab840ad7791be307225e961ac4ae1cded6fe

@@ -9,7 +9,7 @@ const Playlist = ({ userPlaylist, deleteSong }) => {
         }}>Your Playlist:</h3>
       <ul>
         {userPlaylist.map((video, index) => (
-          <li onClick={() => deleteSong(video, index)}>{video.snippet.title}</li>
+          <li key={index} onClick={() => deleteSong(video, index)}>{video.snippet.title}</li>
         ))}
       </ul>
     </div>
