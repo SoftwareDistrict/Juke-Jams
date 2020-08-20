@@ -4,7 +4,7 @@ import PartyPage from './partyPage.js';
 import QueueEntry from './queueEntry.js';
 import GoogleLogin from 'react-google-login';
 import { YOUTUBE_API_KEY, OAUTH_CLIENT_ID} from '../config.js';
-import { getParty, putVotes, postHost, postLogin, getYouTube, postPlaylist, getCellBoolAndCellNum, addInvitee } from './axiosRequests'
+import { getParty, putVotes, postHost, postLogin, getYouTube, postPlaylist, getCellBoolAndCellNum, addInvitee, postCell } from './axiosRequests'
 import $ from 'jquery';
 import player from './youTubeScript.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -35,6 +35,7 @@ class App extends Component {
       cellFilled: false,
       // invitees: [],
       userCell: null,
+      cellText: null,
     };
     this.clickHostParty = this.clickHostParty.bind(this);
     this.dropHostParty = this.dropHostParty.bind(this);
@@ -49,12 +50,18 @@ class App extends Component {
     this.deleteSong = this.deleteSong.bind(this);
     // this.grabInvitees = this.grabInvitees.bind(this);
     this.addASub = this.addASub.bind(this);
+    this.changeHandler = this.changeHandler.bind(this);
   }
   // Toggles the initial player
   componentDidMount() {
     $('#player').toggle();
     
   }
+
+  componentWillUpdate() {
+
+  }
+
   // Handle's the access code
   handleFormChange(event) {
     return this.setState({
@@ -341,6 +348,10 @@ class App extends Component {
     })
   }
 
+   changeHandler (event) {
+      this.setState({ cellText: event.target.value });
+  }
+
   render() {
     const {
       videos,
@@ -358,7 +369,8 @@ class App extends Component {
       admin,
       adminSub,
       cellFilled,
-      userCell
+      userCell,
+      cellText
       // invitees
     } = this.state;
     window.accessCode = accessCode;
@@ -402,10 +414,19 @@ class App extends Component {
     }
 
     // before we hit the user page, need to check if user has cellphone field filled out
-    
     // Renders the access code route and user page upon login
     if (!cellFilled) {
-      return (<Cell currentId={currentId} />);
+      return (
+        <div>
+          <label className='CellNumber'>Enter your cell number:</label>
+          <input type="tel" id="phone" onChange={this.changeHandler} name="phone" />
+          <small>Format: 5044567890</small><br/>
+          <button onClick={()=> {
+            postCell({ id: currentId, cell: cellText })
+            .then(() => this.setState({ cellFilled: true, userCell: cellText }))
+            }}>Submit</button>
+        </div>
+      );
     } else {
       return (
         <Container style={{ display: "flex", justifyContent: 'center', border: "8px solid #cecece" }}>
