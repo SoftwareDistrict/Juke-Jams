@@ -22,7 +22,7 @@ const UserPage = ({
   if (userPlaylist.length) {
     playlist = <Playlist userPlaylist={userPlaylist} deleteSong={deleteSong} />;
   }
-  console.log('userCell: ', userCell)
+  console.log('usercell: ', userCell)
   return (
     <div>
       <h1 style={{ color: "black", backgroundColor: "#ECEBEB", fontFamily: 'Alfa Slab One', textalign: "center", fontSize: 75, fontWeight: 600, textAlign: "center", padding: "30px 20px" }}>
