@@ -39,9 +39,6 @@ const PartyPage = ({
       <div style={{ color: "black", backgroundColor: "white", fontFamily: "Big Shoulders Display", textalign: "center", fontSize: 20, fontWeight: 60, textAlign: "center", padding: "10px 20px" }}>
         Your Party Access Code is: {`${accessCode}`}</div>
       <div>
-        <Button onClick={() => grabInvitees()}>grab</Button>
-      </div>
-      <div>
         <Button id="subscirbe" onClick={() => addASub()}>Subscribe</Button>
       </div>
       <VideoPlayer video={video} nowPlaying={nowPlaying} />
