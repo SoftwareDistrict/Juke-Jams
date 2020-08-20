@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import {Image, ListGroupItem } from "react-bootstrap/";
+import {Image, ListGroupItem, Button } from "react-bootstrap/";
 
 // Host playlist entry
 const QueueEntry = ({ video, listClickHandler, voteUpdate, sortPlaylist, votes }) => {
