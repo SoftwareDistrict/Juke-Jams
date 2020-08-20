@@ -9,6 +9,9 @@ const DB_USER = 'admin'
 const DB_PASS = 'jukejams'
 const DB_HOST = 'jukey-db.c0ovotldczny.us-east-1.rds.amazonaws.com';
 const DB_PORT = 3306;
+const TWL_CELL = '+12067410219';
+const ACC_SID_TWL = 'AC1be957551e7e0e67acea7129a4cb6d82';
+const AUTH_TOK_TWL = 'fe800c01b015b253d160d247a9946491';
 
 module.exports = {
   OAUTH_CLIENT_ID,
@@ -19,5 +22,8 @@ module.exports = {
   DB_HOST,
   DB_USER,
   DB_PASS,
-  DB_PORT
+  DB_PORT,
+  TWL_CELL,
+  ACC_SID_TWL,
+  AUTH_TOK_TWL,
 };
