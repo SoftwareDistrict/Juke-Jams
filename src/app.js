@@ -3,9 +3,8 @@ import UserPage from './userPage.js';
 import PartyPage from './partyPage.js';
 import QueueEntry from './queueEntry.js';
 import GoogleLogin from 'react-google-login';
-import { } from './axiosRequests.js'
 import { YOUTUBE_API_KEY, OAUTH_CLIENT_ID} from '../config.js';
-import { getParty, putVotes, postHost, postLogin, getYouTube, postPlaylist, getCellBoolAndCellNum, getInvitees } from './axiosRequests'
+import { getParty, putVotes, postHost, postLogin, getYouTube, postPlaylist, getCellBoolAndCellNum, addInvitee, postCell } from './axiosRequests'
 import $ from 'jquery';
 import player from './youTubeScript.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -34,8 +33,9 @@ class App extends Component {
       admin: false,
       adminSub: false,
       cellFilled: false,
-      invitees: [],
+      // invitees: [],
       userCell: null,
+      cellText: null,
     };
     this.clickHostParty = this.clickHostParty.bind(this);
     this.dropHostParty = this.dropHostParty.bind(this);
@@ -48,13 +48,20 @@ class App extends Component {
     this.voteUpdate = this.voteUpdate.bind(this);
     this.refreshParty = this.refreshParty.bind(this);
     this.deleteSong = this.deleteSong.bind(this);
-    this.grabInvitees = this.grabInvitees.bind(this);
+    // this.grabInvitees = this.grabInvitees.bind(this);
+    this.addASub = this.addASub.bind(this);
+    this.changeHandler = this.changeHandler.bind(this);
   }
   // Toggles the initial player
   componentDidMount() {
     $('#player').toggle();
     
   }
+
+  componentWillUpdate() {
+
+  }
+
   // Handle's the access code
   handleFormChange(event) {
     return this.setState({
@@ -63,24 +70,39 @@ class App extends Component {
   }
 
   // grab all users that have invitee status
-  grabInvitees() {
-    const { currentId, invitees } = this.state;
-    getInvitees(currentId)
-    .then(({ data }) => {
-      this.setState({ invitees: data.map(({ firstName, lastName, cell }) => {
-        return (
-          <li id='invitee'>
-            <div>{`${firstName} ${lastName}`}</div>
-            <div>{cell}</div>
-            <button id='invite-btn'>Invite</button>
-            <button id='decline-btn'>Decline</button>
-          </li>
-        );
-      }) }); 
-    })
-    .catch(err => console.error('could not get all invitees: ', err));
-  }
+  // grabInvitees() {
+  //   console.log('hajshdlfkjash;;vab.jls;voebvje')
+  //   const { accessCode } = this.state;
+  //   getInvitees(accessCode[accessCode.length - 1])
+  //   .then(({ data }) => {
+  //     this.setState({ invitees: data.map(({ id_host, user_firstName, user_lastName, user_cell }) => {
+  //       return (
+  //         <li id='invitee' key={id_host}>
+  //           <div>{`${user_firstName} ${user_lastName}`}</div>
+  //           <div>{user_cell}</div>
+  //           <button id='invite-btn'>Invite</button>
+  //           <button id='decline-btn'>Decline</button>
+  //         </li>
+  //       );
+  //     }) }); 
+  //   })
+  //   .catch(err => console.error('could not get all invitees: ', err));
+  // }
 
+  addASub() {
+    console.log('ayayayaa');
+    const { accessCode, userCell, currentId, currentUser } = this.state;
+    const options = {
+      id_host: accessCode[accessCode.length - 1],
+      id_user: currentId,
+      user_firstName: currentUser.firstName,
+      user_lastName: currentUser.lastName,
+      cell: userCell,
+    };
+    addInvitee(options)
+    .then(() => console.log('this is in app.js for add sub'))
+    .catch((err) => console.error('this is in app.js for add sub: ', err));
+  }
 
   // Join a Party click handler
   clickJoinParty() {
@@ -109,6 +131,7 @@ class App extends Component {
         this.refreshParty(true);
       })
   }
+
   // Host a party click handler
   clickHostParty() {
     this.setState({admin: true});
@@ -124,6 +147,7 @@ class App extends Component {
       this.refreshParty(true);
     }
   }
+
   // Drop party click handler
   dropHostParty() {
     this.setState({admin: false});
@@ -149,6 +173,7 @@ class App extends Component {
       })
     }
   }
+
   // Axios post request to toggle host status
   toggleHost() {
     const { currentId, hostPartyClicked } = this.state;
@@ -173,52 +198,50 @@ class App extends Component {
       });
     }
   }
+
   // Google auth response
   responseGoogle(response) {
-    console.log(response, 'gooooogle')
-      postLogin({
-        firstName: response.profileObj.givenName,
-        lastName: response.profileObj.familyName,
-        host: false,
-        email: response.profileObj.email,
-      })
-      .then(({ data }) => {
-        let userPlaylist = [];
-        let video = {};
-        if (data.songs) {
-          userPlaylist = data.songs.map((song) => {
-            return {
-              snippet: {
-                thumbnails: { default: { url: song.thumbnail } },
-                title: song.title,
-                channelTitle: song.artist,
-              },
-              id: { videoId: song.url },
-            };
-          });
-        }
-        this.setState({
-          loginComplete: !this.loginComplete,
-          currentUser: response.profileObj.givenName,
-          currentId: data.user.id,
-          userPlaylist,
-          video: userPlaylist[0] || video,
+    postLogin({
+      firstName: response.profileObj.givenName,
+      lastName: response.profileObj.familyName,
+      host: false,
+      email: response.profileObj.email,
+    })
+    .then(({ data }) => {
+      let userPlaylist = [];
+      let video = {};
+      if (data.songs) {
+        userPlaylist = data.songs.map((song) => {
+          return {
+            snippet: {
+              thumbnails: { default: { url: song.thumbnail } },
+              title: song.title,
+              channelTitle: song.artist,
+            },
+            id: { videoId: song.url },
+          };
         });
-      }).then(()=> {
-        getCellBoolAndCellNum(this.state.currentId).then((result)=> {
-          console.log(212, result.data);
-          this.setState(
-            {cellFilled: result.data.bool, userCell: result.data.cell}
-          );
-        });
+      }
+      this.setState({
+        loginComplete: !this.loginComplete,
+        currentUser: response.profileObj.givenName,
+        currentId: data.user.id,
+        userPlaylist,
+        video: userPlaylist[0] || video,
       });
+    })
+    .then(()=> {
+      getCellBoolAndCellNum(this.state.currentId)
+      .then((result)=> this.setState({ cellFilled: result.data.bool, userCell: result.data.cell }))
+      .catch((err) => console.error('getCellAndBoolAndCellAndNum: ', err));
+    });
   }
+
   // Refreshes votes/now playing data for party every 5 seconds
   refreshParty(bool) {
     const { votes } = this.state;
     if (bool) {
       this.refresh = setInterval(() => {
-        console.log('ran refresh')
         if (window.accessCode) {
           getParty(window.accessCode)
           .then(({ data }) => {
@@ -260,7 +283,7 @@ class App extends Component {
           });
         })
         .catch((err) => {
-          console.log(err);
+          console.log('searchHandler App.js: ', err);
         });
     } else {
       this.setState({
@@ -268,6 +291,7 @@ class App extends Component {
       });
     }
   }
+
   // Handles clicks on youtube search results list
   listClickHandler(video) {
     const { hostPartyClicked, currentId, userPlaylist } = this.state;
@@ -275,22 +299,22 @@ class App extends Component {
       this.setState({ video });
       window.ytPlayer.loadVideoById(video.id.videoId);
     } else {
-        postPlaylist({
-          url: video.id.videoId,
-          title: video.snippet.title,
-          artist: video.snippet.channelTitle,
-          thumbnail: video.snippet.thumbnails.default.url,
-        }, currentId)
-        .then(({ data }) => {
-          if (data === false) {
-            // If song doesn't already exist in database
-            this.setState({
-              userPlaylist: userPlaylist.concat([video]),
-              video: userPlaylist[0],
-            });
-          }
-        })
-        .catch((err) => console.log(err));
+      postPlaylist({
+        url: video.id.videoId,
+        title: video.snippet.title,
+        artist: video.snippet.channelTitle,
+        thumbnail: video.snippet.thumbnails.default.url,
+      }, currentId)
+      .then(({ data }) => {
+        if (data === false) {
+          // If song doesn't already exist in database
+          this.setState({
+            userPlaylist: userPlaylist.concat([video]),
+            video: userPlaylist[0],
+          });
+        }
+      })
+      .catch((err) => console.log('listClickHandler: ', err));
     }
   }
   // Updates vote count in state and on db
@@ -312,7 +336,6 @@ class App extends Component {
   // Deletes song from state and db
   deleteSong(video, index) {
     const { userPlaylist, currentId } = this.state;
-    console.log('delete song called with', video, index)
     postPlaylist({
       url: video.id.videoId,
       del: true,
@@ -323,6 +346,10 @@ class App extends Component {
         userPlaylist
       })
     })
+  }
+
+   changeHandler (event) {
+      this.setState({ cellText: event.target.value });
   }
 
   render() {
@@ -342,7 +369,9 @@ class App extends Component {
       admin,
       adminSub,
       cellFilled,
-      invitees
+      userCell,
+      cellText
+      // invitees
     } = this.state;
     window.accessCode = accessCode;
   //if hostParty is clicked, render the Party Page
@@ -362,10 +391,13 @@ class App extends Component {
           adminSub={adminSub}
           videos={videos}
           searchHandler={this.searchHandler}
-          invitees={invitees}
+          userCell={userCell}
+          // invitees={invitees}
+          addASub={this.addASub}
         />
       );
     }
+
   // If the login is not complete, then render the google auth again
     if (!loginComplete) {
       const login = (
@@ -378,53 +410,46 @@ class App extends Component {
           cookiePolicy={"single_host_origin"}
         />
       );
-
-
       return <Landing login={login} />;
     }
 
     // before we hit the user page, need to check if user has cellphone field filled out
-     if (!cellFilled) {
-       return <Cell 
-       currentId={currentId}
-       clickHostParty={this.clickHostParty}
-          clickJoinParty={this.clickJoinParty}
-          videos={videos}
-          searchHandler={this.searchHandler}
-          listClickHandler={this.listClickHandler}
-          userPlaylist={userPlaylist}
-          handleFormChange={this.handleFormChange}
-          accessCode={accessCode}
-          currentUser={currentUser}
-          deleteSong={this.deleteSong}
-          cellFilled={cellFilled}
-       />
-
-     }
-
-
     // Renders the access code route and user page upon login
-    return (
-  <Container style={{ display: "flex", justifyContent: 'center', border: "8px solid #cecece" }}>
-  <Row style={{ padding: "5px" }}>
-    <Col>
-        <UserPage
-          clickHostParty={this.clickHostParty}
-          clickJoinParty={this.clickJoinParty}
-          videos={videos}
-          searchHandler={this.searchHandler}
-          listClickHandler={this.listClickHandler}
-          userPlaylist={userPlaylist}
-          handleFormChange={this.handleFormChange}
-          accessCode={accessCode}
-          currentUser={currentUser}
-          deleteSong={this.deleteSong}
-          userCell={this.state.userCell}
-        />
-    </Col>
-  </Row>
-  </Container>
-    );
+    if (!cellFilled) {
+      return (
+        <div>
+          <label className='CellNumber'>Enter your cell number:</label>
+          <input type="tel" id="phone" onChange={this.changeHandler} name="phone" />
+          <small>Format: 5044567890</small><br/>
+          <button onClick={()=> {
+            postCell({ id: currentId, cell: cellText })
+            .then(() => this.setState({ cellFilled: true, userCell: cellText }))
+            }}>Submit</button>
+        </div>
+      );
+    } else {
+      return (
+        <Container style={{ display: "flex", justifyContent: 'center', border: "8px solid #cecece" }}>
+        <Row style={{ padding: "5px" }}>
+          <Col>
+              <UserPage
+                clickHostParty={this.clickHostParty}
+                clickJoinParty={this.clickJoinParty}
+                videos={videos}
+                searchHandler={this.searchHandler}
+                listClickHandler={this.listClickHandler}
+                userPlaylist={userPlaylist}
+                handleFormChange={this.handleFormChange}
+                accessCode={accessCode}
+                currentUser={currentUser}
+                deleteSong={this.deleteSong}
+                userCell={userCell}
+              />
+          </Col>
+        </Row>
+        </Container>
+      );
+    }
   }
 }
 

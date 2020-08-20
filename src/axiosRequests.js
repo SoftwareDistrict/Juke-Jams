@@ -8,9 +8,9 @@ const URL = 'http://localhost:8080';
 
 const postCell = (cell) => axios.post(`${URL}/postCell`, cell);
 
-const getInvitees = (id) => {
-  return axios.get(`${URL}/findinvites/${id}`);
-};
+// const getInvitees = (id) => axios.get(`${URL}/findinvites/${id}`);
+
+const addInvitee = (options) => axios.post(`${URL}/subscribe`, options);
 
 const getCellBoolAndCellNum = (id) => axios.post(`${URL}/checkCell`, {id: id});
 
@@ -32,7 +32,7 @@ const postPlaylist = (options, currentId) => axios.post(`${URL}/playlist/${curre
 // }
 
 module.exports = {
-  getInvitees,
+  // getInvitees,
   getParty,
   putVotes,
   postHost,
@@ -40,6 +40,7 @@ module.exports = {
   getYouTube,
   postPlaylist,
   postCell,
-  getCellBoolAndCellNum
+  getCellBoolAndCellNum,
+  addInvitee,
   // putPlaylist
 };

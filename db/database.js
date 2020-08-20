@@ -11,7 +11,6 @@ const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
 });
 
 // Tables
-
 const User = sequelize.define('User', {
   firstName: Sequelize.STRING,
   lastName: Sequelize.STRING,
@@ -23,14 +22,26 @@ const User = sequelize.define('User', {
   },
 });
 
-// const Invitee = sequelize.define('User', {
-//   id_host: Sequelize.INTEGER,
-//   id_user: Sequelize.INTEGER,
-//   admin_status: Sequelize.STRING,
-//   user_firstName: Sequelize.STRING,
-//   user_lastName: Sequelize.STRING,
-//   user_cell: Sequelize.TEXT,
-// });
+const Invitee = sequelize.define('Invitee', {
+  id_host: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: 'Users',
+      referencesKey: 'id',
+    },
+  },
+  id_user: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: 'Users',
+      referencesKey: 'id',
+    },
+  },
+  admin_status: Sequelize.STRING,
+  user_firstName: Sequelize.STRING,
+  user_lastName: Sequelize.STRING,
+  user_cell: Sequelize.TEXT,
+});
 
 const Song = sequelize.define('Song', {
   url: {
@@ -108,11 +119,11 @@ const PartySongUser = sequelize.define('PartySongUser', {
 });
 
 // Queries
-// sequelize
-//   .query('DROP DATABASE IF EXISTS greenfield')
-//   .then(() => sequelize.query('CREATE DATABASE greenfield'))
-// .then(() =>
-sequelize.query('USE greenfield')
+sequelize
+  .query('DROP DATABASE IF EXISTS greenfield')
+  .then(() => sequelize.query('CREATE DATABASE greenfield'))
+.then(() =>
+sequelize.query('USE greenfield'))
   .then(() => {
     const User = sequelize.define('User', {
       firstName: Sequelize.STRING,
@@ -120,6 +131,27 @@ sequelize.query('USE greenfield')
       hostedPartyId: Sequelize.INTEGER,
       cell: Sequelize.TEXT,
       email: Sequelize.STRING,
+    });
+
+    const Invitee = sequelize.define('Invitee', {
+      id_host: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Users',
+          referencesKey: 'id',
+        },
+      },
+      id_user: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Users',
+          referencesKey: 'id',
+        },
+      },
+      admin_status: Sequelize.STRING,
+      user_firstName:  Sequelize.STRING,
+      user_lastName: Sequelize.STRING,
+      user_cell: Sequelize.TEXT,
     });
 
     const Song = sequelize.define('Song', {
@@ -193,10 +225,10 @@ sequelize.query('USE greenfield')
       },
     });
 
-    //Invitee.sync({ force: true });
     Song.sync({ force: true });
     User.sync({ force: true })
-      .then(() => {
+    .then(() => {
+        Invitee.sync({ force: true });
         Playlist.sync({ force: true });
         PlaylistSong.sync({ force: true });
         Party.sync({ force: true });
@@ -217,4 +249,5 @@ module.exports = {
   PlaylistSong,
   Party,
   PartySongUser,
+  Invitee
 };
