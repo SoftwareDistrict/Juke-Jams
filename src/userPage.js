@@ -22,7 +22,6 @@ const UserPage = ({
   if (userPlaylist.length) {
     playlist = <Playlist userPlaylist={userPlaylist} deleteSong={deleteSong} />;
   }
-  console.log('usercell: ', userCell)
   return (
     <div>
       <h1 style={{ color: "black", backgroundColor: "#ECEBEB", fontFamily: 'Alfa Slab One', textalign: "center", fontSize: 75, fontWeight: 600, textAlign: "center", padding: "30px 20px" }}>
@@ -30,7 +29,7 @@ const UserPage = ({
       </h1>
       <div>
       <h2 style={{ textAlign: "center", fontSize: 25, fontFamily: "verdana", color: "black"}}>
-    {`Welcome, ${currentUser.split(' ')[0]}!`}</h2>
+    {`Welcome, ${currentUser['firstName'].split(' ')[0]}!`}</h2>
     </div>
     <Button size="lg" onClick={() => clickHostParty()}>Host a Party!</Button>{' '}
       <form>
