@@ -18,7 +18,7 @@ class Cell extends Component {
 
   render() {
     const { currentId } = this.props;
-    console.log('currentid', currentId);
+    // console.log('currentid', currentId);
 
     return (
       <div>
