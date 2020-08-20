@@ -210,6 +210,7 @@ class App extends Component {
     .then(({ data }) => {
       let userPlaylist = [];
       let video = {};
+      console.log(data.songs, 'user has a playlist with songs')
       if (data.songs) {
         userPlaylist = data.songs.map((song) => {
           return {
@@ -296,9 +297,11 @@ class App extends Component {
   listClickHandler(video) {
     const { hostPartyClicked, currentId, userPlaylist } = this.state;
     if (hostPartyClicked) {
+      console.log('im inside of hostpartyclicked')
       this.setState({ video });
       window.ytPlayer.loadVideoById(video.id.videoId);
     } else {
+      console.log('im inside of the else statment')
       postPlaylist({
         url: video.id.videoId,
         title: video.snippet.title,
@@ -379,6 +382,7 @@ class App extends Component {
       return (
         <PartyPage
           video={video}
+          accessCodee={accessCode}
           partyPlaylist={partyPlaylist}
           hostPartyClicked={hostPartyClicked}
           dropHostParty={this.dropHostParty}
@@ -394,6 +398,8 @@ class App extends Component {
           userCell={userCell}
           // invitees={invitees}
           addASub={this.addASub}
+          currentId={currentId}
+          userPlaylist={userPlaylist}
         />
       );
     }
@@ -438,7 +444,7 @@ class App extends Component {
                 videos={videos}
                 searchHandler={this.searchHandler}
                 listClickHandler={this.listClickHandler}
-                userPlaylist={userPlaylist}
+                userPlaylist={userPlaylist} 
                 handleFormChange={this.handleFormChange}
                 accessCode={accessCode}
                 currentUser={currentUser}
