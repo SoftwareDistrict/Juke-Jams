@@ -10,7 +10,7 @@ const postCell = (cell) => axios.post(`${URL}/postCell`, cell);
 
 // const getInvitees = (id) => axios.get(`${URL}/findinvites/${id}`);
 
-// const addInvitee = (options) => axios.post(`${URL}/addInvitee`, options);
+const addInvitee = (options) => axios.post(`${URL}/subscribe`, options);
 
 const getCellBoolAndCellNum = (id) => axios.post(`${URL}/checkCell`, {id: id});
 
@@ -41,6 +41,6 @@ module.exports = {
   postPlaylist,
   postCell,
   getCellBoolAndCellNum,
-  // addInvitee,
+  addInvitee,
   // putPlaylist
 };
