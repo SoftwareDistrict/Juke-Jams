@@ -34,11 +34,15 @@ const PartyPage = ({
 
   const [showSearchComp, setShowSearchComp] = useState(false);
   // const [ showInvitees, setShowInvitees ] = useState(false);
-
+ const onClick = () => {
+    console.log('userCell: ', userCell);
+  }
 
   const buttonText = hostPartyClicked ? 'Drop Hosted Party' : 'Leave Party';
   return (
     <div>
+      <button onClick={onClick}>CLICK MEEEE</button>
+
       <div style={{ color: "black", backgroundColor: "white", fontFamily: "Big Shoulders Display", textalign: "center", fontSize: 20, fontWeight: 60, textAlign: "center", padding: "10px 20px" }}>
         Your Party Access Code is: {`${accessCode}`}</div>
       <button id="subscirbe" onClick={() => addASub()}>Subscribe</button>
