@@ -15,19 +15,19 @@ const {
     Invitee
   } = require('../db/database.js');
 
-// SEND ACCESS CODE
-router.post('/invites', (req, res) => {
-  const { msg, cell } = req.body;
-  client.messages.create({ 
-    body: msg, 
-    from: TWL_CELL,       
-    to: cell
-  }) 
-  .then(message => console.log(message.sid)) 
-  .done();
-});
+// // SEND ACCESS CODE
+// router.post('/invites', (req, res) => {
+//   const { msg, cell } = req.body;
+//   client.messages.create({ 
+//     body: msg, 
+//     from: TWL_CELL,       
+//     to: cell
+//   }) 
+//   .then(message => console.log(message.sid)) 
+//   .done();
+// });
 
-// GET PHONE NUMBER
+// // GET PHONE NUMBER
 // router.get('/findinvites/:id', (req, res) => {
 //   const hostId = req.params.id;
 //   Invitee.findAll({ where: { id_host: hostId } })
@@ -36,12 +36,13 @@ router.post('/invites', (req, res) => {
 // });
 
 // ADD AN INVITEE
-// router.post('addInvitee', (req, res) => {
-//   const optionsObj = req.body;
-//   Invitee.create(optionsObj)
-//   .then(() => console.log('added that Sub BABYYYY'))
-//   .catch((err) => console.error('that did not add the sub: ', err));
-// });
+router.post('subscribe', (req, res) => {
+  console.log('add a sub in routes: ', req.body);
+  const options = req.body;
+  Invitee.create(options)
+  .then(() => console.log('added that Sub BABYYYY'))
+  .catch((err) => console.error('that did not add the sub: ', err));
+});
 
 
 //Login route
@@ -73,9 +74,7 @@ router.post('/postCell', async (req, res) => {
   console.log(req.body);
   const { id, cell } = req.body;
   if (cell.length === 10) {
-    User.update(
-      { cell }, { where: { id } },
-    )
+    User.update({ cell }, { where: { id } })
       .then((result) => {
         console.log(result);
         res.send(result);
@@ -91,19 +90,14 @@ router.post('/postCell', async (req, res) => {
 });
 
 router.post('/checkCell', async (req, res) => {
-  console.log(56, req.body);
   const { id } = req.body;
-  User.findOne(
-    { where: { id } },
-  ).then((data) => {
-    // console.log('rowwwwwwww', row.dataValues);
+  User.findOne({ where: { id } })
+  .then((data) => {
     const row = data.dataValues;
     if (row.cell === null) {
       res.send({ bool: false, cell: null });
-      // res.send(false);
     } else {
       res.send({ bool: true, cell: row.cell });
-      // res.send(true);
     }
   });
 });
