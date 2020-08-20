@@ -69,7 +69,7 @@ function getNextVid() {
             }
           })
           .catch((err) => {
-            console.log('there was an error', err);
+            console.error('there was an error', err);
           })
         }
         // if (event.data == YT.PlayerState.PLAYING && !done) {
