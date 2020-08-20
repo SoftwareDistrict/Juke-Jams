@@ -235,11 +235,11 @@ sequelize.query('USE greenfield'))
         PartySongUser.sync({ force: true });
       })
       .catch((err) => {
-        console.log(err);
+        console.error('error in DB: ', err);
       });
   })
   .catch((err) => {
-    console.error(err);
+    console.error('error in DB: ', err);
   });
 
 module.exports = {
