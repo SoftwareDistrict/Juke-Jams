@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import Queue from './queue.js';
 import VideoPlayer from './videoPlayer.js';
 import Button from 'react-bootstrap/Button';
-import SearchResults from './searchResults'
-import Search from './search'
+import SearchResultsParty from './searchResults'
+import SearchParty from './searchParty'
 
 
 
@@ -56,8 +56,8 @@ const PartyPage = ({
           <button onClick={()=> setShowSearchComp(!showSearchComp)}>Make a Search</button><br/>
           {showSearchComp ? (
             <div>
-              <Search searchHandler={searchHandler} />
-              <SearchResults videos={videos} listClickHandler={listClickHandler} userPlaylist={userPlaylist}/>
+              <SearchParty searchHandler={searchHandler} />
+              <SearchResultsParty videos={videos} listClickHandler={listClickHandler} userPlaylist={userPlaylist}/>
             </div>
             ) : (
               <div></div>
