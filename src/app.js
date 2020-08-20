@@ -4,7 +4,7 @@ import PartyPage from './partyPage.js';
 import QueueEntry from './queueEntry.js';
 import GoogleLogin from 'react-google-login';
 import { YOUTUBE_API_KEY, OAUTH_CLIENT_ID} from '../config.js';
-import { getParty, putVotes, postHost, postLogin, getYouTube, postPlaylist, getCellBoolAndCellNum, addInvitee, postCell } from './axiosRequests'
+import { getParty, putVotes, postHost, postLogin, getYouTube, postPlaylist, getCellBoolAndCellNum, addInvitee, getInvitees, postCell } from './axiosRequests'
 import $ from 'jquery';
 import player from './youTubeScript.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -58,10 +58,6 @@ class App extends Component {
     
   }
 
-  componentWillUpdate() {
-
-  }
-
   // Handle's the access code
   handleFormChange(event) {
     return this.setState({
@@ -90,15 +86,15 @@ class App extends Component {
   // }
 
   addASub() {
-    console.log('ayayayaa');
     const { accessCode, userCell, currentId, currentUser } = this.state;
     const options = {
-      id_host: accessCode[accessCode.length - 1],
+      id_host: Number(accessCode[accessCode.length - 1]),
       id_user: currentId,
       user_firstName: currentUser.firstName,
       user_lastName: currentUser.lastName,
       cell: userCell,
     };
+    console.log('options: ', options);
     addInvitee(options)
     .then(() => console.log('this is in app.js for add sub'))
     .catch((err) => console.error('this is in app.js for add sub: ', err));
@@ -224,7 +220,10 @@ class App extends Component {
       }
       this.setState({
         loginComplete: !this.loginComplete,
-        currentUser: response.profileObj.givenName,
+        currentUser: {
+          firstName: response.profileObj.givenName,
+          lastName: response.profileObj.familyName
+        },
         currentId: data.user.id,
         userPlaylist,
         video: userPlaylist[0] || video,
@@ -283,7 +282,7 @@ class App extends Component {
           });
         })
         .catch((err) => {
-          console.log('searchHandler App.js: ', err);
+          console.error('searchHandler App.js: ', err);
         });
     } else {
       this.setState({
@@ -314,7 +313,7 @@ class App extends Component {
           });
         }
       })
-      .catch((err) => console.log('listClickHandler: ', err));
+      .catch((err) => console.error('listClickHandler: ', err));
     }
   }
   // Updates vote count in state and on db
