@@ -4,4 +4,3 @@ dist
 .npm
 .DS_Store
 .env
-config.js

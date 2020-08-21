@@ -8,8 +8,6 @@ import SearchParty from './searchParty'
 import { postPlaylist } from './axiosRequests'
 
 
-
-
 // Party page
 const PartyPage = ({
   video,
@@ -29,9 +27,9 @@ const PartyPage = ({
   videos,
   searchHandler,
   userCell,
-  // invitees,
+  invitees,
   addASub,
-  accessCodee,
+  grabInvitees,
   currentId
 }) => {
       console.log(partyPlaylist, 'im a prop in partypage');
@@ -43,9 +41,6 @@ const PartyPage = ({
 
   const [showSearchComp, setShowSearchComp] = useState(false);
   // const [ showInvitees, setShowInvitees ] = useState(false);
- const onClick = () => {
-    console.log('userCell: ', userCell);
-  }
 
   const partyClickHandler = (video) => {
     
@@ -78,19 +73,21 @@ console.log(partyClickHandler, ' am i not a freaking function')
   const buttonText = hostPartyClicked ? 'Drop Hosted Party' : 'Leave Party';
   return (
     <div>
-      <button onClick={onClick}>CLICK MEEEE</button>
-
       <div style={{ color: "black", backgroundColor: "white", fontFamily: "Big Shoulders Display", textalign: "center", fontSize: 20, fontWeight: 60, textAlign: "center", padding: "10px 20px" }}>
         Your Party Access Code is: {`${accessCode}`}</div>
-      <button id="subscirbe" onClick={() => addASub()}>Subscribe</button>
-      <VideoPlayer video={video} nowPlaying={nowPlaying} /> 
+      <div>
+        <Button id="subscirbe" onClick={() => addASub()}>Subscribe</Button>
+      </div>
+      <VideoPlayer video={video} nowPlaying={nowPlaying} />
       {admin ? (
         <div>
           {/* <div>
             <ul id='inviteesDisplay'>{invitees}</ul>
           </div> */}
-          {/* <button onClick={setShowInvitees(!showInvitees)}>Invites</button> */}
-          <button onClick={()=> setShowSearchComp(!showSearchComp)}>Make a Search</button><br/>
+          {/* <Button onClick={setShowInvitees(!showInvitees)}>Invites</Button> */}
+          <div>
+            <Button onClick={()=> setShowSearchComp(!showSearchComp)}>Make a Search</Button><br/>
+          </div>
           {showSearchComp ? (
             <div>
               <SearchParty searchHandler={searchHandler} />

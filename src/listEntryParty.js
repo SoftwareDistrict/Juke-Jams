@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, ListGroupItem } from "react-bootstrap/";
+import {Image, ListGroupItem, Button } from "react-bootstrap/";
 
 // User song list entry
 const ListEntryParty = ({ video, listClickHandler }) => {
@@ -12,7 +12,9 @@ const ListEntryParty = ({ video, listClickHandler }) => {
             <div style={{ fontSize: "1.4em", fontFamily: "Lucida Bright", fontWeight: "bolder", strokeWidth: ""}}>{video.snippet.title}</div>
             <div style={{ color:"#1B4CAF ", fontSize: "1.2em", fontFamily: "Avanta Garde", fontWeight: "bolder", strokeWidth: "13", fontColor: "blue"}}>{video.snippet.channelTitle}</div>
           </div>
-            <button>Add to que</button>
+          <div>
+            <Button>Add To Queue</Button>
+          </div>
         </div>
       </div>
     </ListGroupItem>

@@ -27,29 +27,32 @@ const {
 //   .done();
 // });
 
-// // GET PHONE NUMBER
-// router.get('/findinvites/:id', (req, res) => {
-//   const hostId = req.params.id;
-//   Invitee.findAll({ where: { id_host: hostId } })
-//   .then((response) => res.send(response.data))
-//   .catch(err => console.error('could not get all invitees: ', err));
-// });
+// GET PHONE NUMBER
+router.get('/findinvites/:id', async(req, res) => {
+  const hostId = req.params.id;
+  await Invitee.findAll({ where: { id_host: hostId } })
+  .then((response) => {
+    console.log('response: ', response);
+    res.status(200).send(response);
+  })
+  .catch(err => {
+    res.sendStatus(500);
+    console.error('could not get all invitees: ', err);
+  });
+});
 
 // ADD AN INVITEE
-router.post('subscribe', (req, res) => {
-  console.log('add a sub in routes: ', req.body);
+router.post('/subscribe', async (req, res) => {
   const options = req.body;
-  Invitee.create(options)
+  console.log('options: ', options);
+  await Invitee.create(options)
   .then(() => console.log('added that Sub BABYYYY'))
   .catch((err) => console.error('that did not add the sub: ', err));
 });
 
-
 //Login route
 router.post('/login', async (req, res) => {
-  console.log(req.body);
   const user = await User.findOne({ where: { email: req.body.email } });
-
   if (user === null) {
     await User.create(req.body)
       .then((dbResponse) => {
@@ -71,21 +74,13 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/postCell', async (req, res) => {
-  console.log(req.body);
   const { id, cell } = req.body;
   if (cell.length === 10) {
     User.update({ cell }, { where: { id } })
-      .then((result) => {
-        console.log(result);
-        res.send(result);
-      })
-      .catch((err) => {
-        console.log(err);
-        res.send(err);
-      });
+      .then((result) => res.send(result))
+      .catch((err) => res.status(500).send(err));
   } else {
-    res.status(500);
-    res.send('post request for cell did not work');
+    res.status(500).send('post request for cell did not work');
   }
 });
 
@@ -104,9 +99,7 @@ router.post('/checkCell', async (req, res) => {
 
 // Update votes
 router.put('/vote', async (req, res) => {
-  const {
-    url, direction, accessCode, reset, userId,
-  } = req.body;
+  const { url, direction, accessCode, reset, userId } = req.body;
   const party = await Party.findOne({ where: { accessCode } });
   const playlist = await Playlist.findOne({ where: { userId: party.hostId } });
   const song = url && await Song.findOne({ where: { url } });
@@ -115,12 +108,8 @@ router.put('/vote', async (req, res) => {
     await party.destroy();
     const playlistSongs = await PlaylistSong.findAll({ where: { playlistId: playlist.id } }, { raw: true });
     await Promise.all(playlistSongs.map((song) => song.update({ vote: null })))
-      .then(() => {
-        res.sendStatus(200);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+      .then(() => res.sendStatus(200))
+      .catch((err) => console.error('Promise in .put/vote: ', err));
   } else {
     const playlistSong = await PlaylistSong.findOne({ where: { songId: song.id, playlistId: playlist.id } });
     const voteObj = { vote: playlistSong.vote || 0 };
@@ -151,7 +140,6 @@ router.get('/party/:code', async (req, res) => {
   const accessCode = req.params.code;
 
   const party = await Party.findOne({ where: { accessCode } });
-  // console.log('the access code', accessCode, 'the party', party)
   if (party !== null) {
     const playlist = await Playlist.findOne({ where: { userId: party.hostId } });
 
@@ -186,8 +174,6 @@ router.post('/host', async (req, res) => {
       accessCode += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     accessCode += accessCode.concat(id);
-    console.log('user: ', user);
-    console.log('accessCode: ', accessCode);
     Party.create({ hostId: id, accessCode })
       .then(({ dataValues }) => {
         user.update({ hostedPartyId: dataValues.id });

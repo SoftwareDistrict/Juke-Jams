@@ -9,9 +9,8 @@ const Queue = ({ newPartyPlaylist, partyClickHandler, sortPlaylist, voteUpdate, 
     <ListGroup style={{ padding: "5%" }}>
     <div>
       {newPartyPlaylist.map((video) => {
-        console.log(video, 'im a video/song in queue')
        return <QueueEntry video={video} partyClickHandler={partyClickHandler} sortPlaylist={sortPlaylist} voteUpdate={voteUpdate} votes={votes} />
-}
+        }
       )}
     </div>
     </ListGroup>
