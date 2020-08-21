@@ -52,10 +52,10 @@ class App extends Component {
     this.addASub = this.addASub.bind(this);
     this.changeHandler = this.changeHandler.bind(this);
   }
+
   // Toggles the initial player
   componentDidMount() {
     $('#player').toggle();
-    
   }
 
   // Handle's the access code
@@ -69,40 +69,29 @@ class App extends Component {
   grabInvitees() {
     const { currentId } = this.state;
     getInvitees(currentId)
-    .then((response) => {
-      response.data.forEach((invitee) =>{
-        console.log(74, invitee.admin_status);
-        if(invitee.id_user === currentId && invitee.admin_status === '1'){
-          this.setState({adminSub: true});
-        }
-      })
-      this.setState({ invitees: response.data.map(({
-        id_host,
-        id_user,
-        user_firstName,
-        user_lastName,
-        user_cell
-      }) => {
-        return (
-          <li id='invitee' key={id_user}>
-            <div>{`${user_firstName} ${user_lastName}`}</div>
-            <div>{user_cell}</div>
-            <Button id='invite-btn'>Invite</Button>
-            <Button id='decline-btn'>Decline</Button>
-          </li>
-        );
-      }) });
-    })
+    .then(response => this.setState({ invitees: response.data }))
     .catch(err => console.error('could not get all invitees: ', err));
   }
 
+  // getAdminStatus() {
+  //   getInviteesMaybe(IDK)
+  //   .then((response) => {
+  //     response.data.forEach((invitee) =>{
+  //       console.log(74, invitee.admin_status);
+  //       if(invitee.id_user === currentId && invitee.admin_status === '1'){
+  //         this.setState({adminSub: true});
+  //       }
+  //     })
+  //   })
+  //   .catch(err => console.error('could not grab admin status: ', err));
+  // }
 
   addASub() {
     const { accessCode, userCell, currentId, currentUser } = this.state;
     const options = {
       id_host: Number(accessCode[accessCode.length - 1]),
       id_user: currentId,
-      admin_status: true,
+      // admin_status: true,
       user_firstName: currentUser.firstName,
       user_lastName: currentUser.lastName,
       user_cell: userCell,
@@ -122,9 +111,7 @@ class App extends Component {
         partyPlaylist = data.map((item) => {
           const { song } = item;
           if (item.nowPlaying) {
-            this.setState({
-              nowPlaying: song
-            })
+            this.setState({ nowPlaying: song });
           }
           votes[song.url] = item.vote || 0
           return {
@@ -136,17 +123,16 @@ class App extends Component {
             id: { videoId: song.url },
           };
         });
-       
         if (this.state.video.id) {
           window.ytPlayer.loadVideoById(this.state.video.id.videoId)
           $('#player').toggle();
           window.ytPlayer.playVideo();
-          }
-          this.setState({partyPlaylist, votes, joinPartyClicked: true });
-         
-          this.refreshParty(true);
-  })
-}
+        }
+        this.setState({partyPlaylist, votes, joinPartyClicked: true });
+        this.refreshParty(true);
+      })
+      .catch(err => console.error('this happened when join party: ', err));
+  }
 
   // Host a party click handler
   clickHostParty() {
@@ -397,7 +383,8 @@ class App extends Component {
       invitees,
     } = this.state;
     window.accessCode = accessCode;
-  //if hostParty is clicked, render the Party Page
+
+  // if hostParty is clicked, render the Party Page
     if (hostPartyClicked || joinPartyClicked) {
       return (
         <PartyPage
@@ -421,8 +408,6 @@ class App extends Component {
           currentId={currentId}
           userPlaylist={userPlaylist}
           grabInvitees={this.grabInvitees}
-
-    
         />
       );
     }
