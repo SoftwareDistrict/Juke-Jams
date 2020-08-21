@@ -70,8 +70,6 @@ class App extends Component {
     const { currentId } = this.state;
     getInvitees(currentId)
     .then((response) => {
-      console.log('daaaatatat: ', response);
-      console.log('BEFORE: ', this.state.invitees);
       this.setState({ invitees: response.data.map(({
         id_host,
         id_user,
@@ -88,7 +86,6 @@ class App extends Component {
           </li>
         );
       }) });
-      console.log('AFTER: ', this.state.invitees);
     })
     .catch(err => console.error('could not get all invitees: ', err));
   }
@@ -382,7 +379,7 @@ class App extends Component {
       cellFilled,
       userCell,
       cellText,
-      invitees
+      invitees,
     } = this.state;
     window.accessCode = accessCode;
   //if hostParty is clicked, render the Party Page
@@ -390,7 +387,7 @@ class App extends Component {
       return (
         <PartyPage
           video={video}
-          accessCodee={accessCode}
+          accessCode={accessCode}
           partyPlaylist={partyPlaylist}
           hostPartyClicked={hostPartyClicked}
           dropHostParty={this.dropHostParty}

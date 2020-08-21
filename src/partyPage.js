@@ -8,6 +8,8 @@ import SearchParty from './searchParty'
 import { postPlaylist } from './axiosRequests'
 
 
+
+
 // Party page
 const PartyPage = ({
   video,
@@ -27,13 +29,21 @@ const PartyPage = ({
   videos,
   searchHandler,
   userCell,
-  invitees,
+  // invitees,
   addASub,
-  grabInvitees,
+  accessCode,
+
   currentId
 }) => {
-      console.log(partyPlaylist, 'im a prop in partypage');
-      console.log(userPlaylist, 'im userPlaylist prop')
+  
+
+  const hostiD = function (accessCode) {
+    if (accessCode === null) {
+      return "i am an empty accesscode"
+    } else {
+      return Number(accessCode[accessCode.length - 1]);
+    }
+  }
       // setting state that will contain the current playlist being used in partypage
 
       const [newPartyPlaylist, setPlaylist] = useState(partyPlaylist)
@@ -41,19 +51,25 @@ const PartyPage = ({
 
   const [showSearchComp, setShowSearchComp] = useState(false);
   // const [ showInvitees, setShowInvitees ] = useState(false);
+ const onClick = () => {
+    console.log('userCell: ', userCell);
+  }
 
   const partyClickHandler = (video) => {
-    
-    // if (hostPartyClicked) {
-     
-    // } 
+   const id = hostiD(accessCode);
+  //   if (admin) {
+  //     id = currentId;
+  //   } else{
+  //     id = hostiD();
+  //   }
+  
     console.log('partyclick handler CLIIIICKED')
       postPlaylist({
         url: video.id.videoId,
         title: video.snippet.title,
         artist: video.snippet.channelTitle,
         thumbnail: video.snippet.thumbnails.default.url,
-      }, currentId)
+      }, id)
       .then(({ data }) => {
         console.log(data, 'party page data postPlaylist DATABASE')
         if (data === false) {
@@ -71,23 +87,22 @@ const PartyPage = ({
   }
 console.log(partyClickHandler, ' am i not a freaking function')
   const buttonText = hostPartyClicked ? 'Drop Hosted Party' : 'Leave Party';
+
   return (
     <div>
+      <button onClick={onClick}>CLICK MEEEE</button>
+
       <div style={{ color: "black", backgroundColor: "white", fontFamily: "Big Shoulders Display", textalign: "center", fontSize: 20, fontWeight: 60, textAlign: "center", padding: "10px 20px" }}>
         Your Party Access Code is: {`${accessCode}`}</div>
-      <div>
-        <Button id="subscirbe" onClick={() => addASub()}>Subscribe</Button>
-      </div>
-      <VideoPlayer video={video} nowPlaying={nowPlaying} />
+      {!admin ? <div><button id="subscirbe" onClick={() => addASub()}>Subscribe</button></div> : <div></div>}
+      <VideoPlayer video={video} nowPlaying={nowPlaying} /> 
       {admin ? (
         <div>
           {/* <div>
             <ul id='inviteesDisplay'>{invitees}</ul>
           </div> */}
-          {/* <Button onClick={setShowInvitees(!showInvitees)}>Invites</Button> */}
-          <div>
-            <Button onClick={()=> setShowSearchComp(!showSearchComp)}>Make a Search</Button><br/>
-          </div>
+          {/* <button onClick={setShowInvitees(!showInvitees)}>Invites</button> */}
+          <button onClick={()=> setShowSearchComp(!showSearchComp)}>Make a Search</button><br/>
           {showSearchComp ? (
             <div>
               <SearchParty searchHandler={searchHandler} />
