@@ -70,8 +70,12 @@ class App extends Component {
     const { currentId } = this.state;
     getInvitees(currentId)
     .then((response) => {
-      console.log('daaaatatat: ', response);
-      console.log('BEFORE: ', this.state.invitees);
+      response.data.forEach((invitee) =>{
+        console.log(74, invitee.admin_status);
+        if(invitee.id_user === currentId && invitee.admin_status === '1'){
+          this.setState({adminSub: true});
+        }
+      })
       this.setState({ invitees: response.data.map(({
         id_host,
         id_user,
@@ -88,19 +92,20 @@ class App extends Component {
           </li>
         );
       }) });
-      console.log('AFTER: ', this.state.invitees);
     })
     .catch(err => console.error('could not get all invitees: ', err));
   }
+
 
   addASub() {
     const { accessCode, userCell, currentId, currentUser } = this.state;
     const options = {
       id_host: Number(accessCode[accessCode.length - 1]),
       id_user: currentId,
+      admin_status: true,
       user_firstName: currentUser.firstName,
       user_lastName: currentUser.lastName,
-      cell: userCell,
+      user_cell: userCell,
     };
     console.log('options: ', options);
     addInvitee(options)
@@ -131,10 +136,17 @@ class App extends Component {
             id: { videoId: song.url },
           };
         });
-        this.setState({ partyPlaylist, votes, joinPartyClicked: true });
-        this.refreshParty(true);
-      })
-  }
+       
+        if (this.state.video.id) {
+          window.ytPlayer.loadVideoById(this.state.video.id.videoId)
+          $('#player').toggle();
+          window.ytPlayer.playVideo();
+          }
+          this.setState({partyPlaylist, votes, joinPartyClicked: true });
+         
+          this.refreshParty(true);
+  })
+}
 
   // Host a party click handler
   clickHostParty() {
@@ -215,6 +227,7 @@ class App extends Component {
     .then(({ data }) => {
       let userPlaylist = [];
       let video = {};
+
       if (data.songs) {
         userPlaylist = data.songs.map((song) => {
           return {
@@ -304,9 +317,11 @@ class App extends Component {
   listClickHandler(video) {
     const { hostPartyClicked, currentId, userPlaylist } = this.state;
     if (hostPartyClicked) {
+
       this.setState({ video });
       window.ytPlayer.loadVideoById(video.id.videoId);
     } else {
+
       postPlaylist({
         url: video.id.videoId,
         title: video.snippet.title,
@@ -379,7 +394,7 @@ class App extends Component {
       cellFilled,
       userCell,
       cellText,
-      invitees
+      invitees,
     } = this.state;
     window.accessCode = accessCode;
   //if hostParty is clicked, render the Party Page
@@ -387,6 +402,7 @@ class App extends Component {
       return (
         <PartyPage
           video={video}
+          accessCode={accessCode}
           partyPlaylist={partyPlaylist}
           hostPartyClicked={hostPartyClicked}
           dropHostParty={this.dropHostParty}
@@ -402,7 +418,11 @@ class App extends Component {
           userCell={userCell}
           invitees={invitees}
           addASub={this.addASub}
+          currentId={currentId}
+          userPlaylist={userPlaylist}
           grabInvitees={this.grabInvitees}
+
+    
         />
       );
     }
@@ -447,7 +467,7 @@ class App extends Component {
                 videos={videos}
                 searchHandler={this.searchHandler}
                 listClickHandler={this.listClickHandler}
-                userPlaylist={userPlaylist}
+                userPlaylist={userPlaylist} 
                 handleFormChange={this.handleFormChange}
                 accessCode={accessCode}
                 currentUser={currentUser}

@@ -3,13 +3,14 @@ import QueueEntry from './queueEntry.js';
 import ListGroup from "react-bootstrap/ListGroup";
 
 // Host Playlist
-const Queue = ({ partyPlaylist, listClickHandler, sortPlaylist, voteUpdate, votes }) => {
+const Queue = ({ newPartyPlaylist, partyClickHandler, sortPlaylist, voteUpdate, votes }) => {
+
   return (
     <ListGroup style={{ padding: "5%" }}>
     <div>
-      {partyPlaylist.map((video) => {
-       return <QueueEntry video={video} listClickHandler={listClickHandler} sortPlaylist={sortPlaylist} voteUpdate={voteUpdate} votes={votes} />
-      }
+      {newPartyPlaylist.map((video) => {
+       return <QueueEntry video={video} partyClickHandler={partyClickHandler} sortPlaylist={sortPlaylist} voteUpdate={voteUpdate} votes={votes} />
+        }
       )}
     </div>
     </ListGroup>

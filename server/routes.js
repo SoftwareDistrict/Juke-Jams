@@ -32,7 +32,7 @@ router.get('/findinvites/:id', async(req, res) => {
   const hostId = req.params.id;
   await Invitee.findAll({ where: { id_host: hostId } })
   .then((response) => {
-    console.log('response: ', response);
+    // console.log('response: ', response);
     res.status(200).send(response);
   })
   .catch(err => {

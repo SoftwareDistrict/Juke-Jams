@@ -18,7 +18,8 @@ const UserPage = ({
   deleteSong,
   userCell,
   invitees,
-  grabInvitees
+  grabInvitees,
+  accessCode
 }) => {
   let playlist;
   if (userPlaylist.length) {
