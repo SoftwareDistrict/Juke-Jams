@@ -70,6 +70,11 @@ class App extends Component {
     const { currentId } = this.state;
     getInvitees(currentId)
     .then((response) => {
+      response.data.forEach((invitee) =>{
+        if(invitee.id_user === currentId && invitee.admin_status === true){
+          this.setState({adminSub: true});
+        }
+      })
       this.setState({ invitees: response.data.map(({
         id_host,
         id_user,
@@ -95,9 +100,10 @@ class App extends Component {
     const options = {
       id_host: Number(accessCode[accessCode.length - 1]),
       id_user: currentId,
+      admin_status: true,
       user_firstName: currentUser.firstName,
       user_lastName: currentUser.lastName,
-      cell: userCell,
+      user_cell: userCell,
     };
     console.log('options: ', options);
     addInvitee(options)
@@ -128,10 +134,17 @@ class App extends Component {
             id: { videoId: song.url },
           };
         });
-        this.setState({ partyPlaylist, votes, joinPartyClicked: true });
-        this.refreshParty(true);
-      })
-  }
+        console.log(this.state.video.id);
+        if (this.state.video.id) {
+          window.ytPlayer.loadVideoById(this.state.video.id.videoId)
+          $('#player').toggle();
+          window.ytPlayer.playVideo();
+          }
+          this.setState({partyPlaylist, votes, joinPartyClicked: true });
+          console.log(this.state.joinPartyClicked);
+          this.refreshParty(true);
+  })
+}
 
   // Host a party click handler
   clickHostParty() {
@@ -406,6 +419,8 @@ class App extends Component {
           currentId={currentId}
           userPlaylist={userPlaylist}
           grabInvitees={this.grabInvitees}
+
+    
         />
       );
     }

@@ -87,38 +87,127 @@ const PartyPage = ({
   }
 console.log(partyClickHandler, ' am i not a freaking function')
   const buttonText = hostPartyClicked ? 'Drop Hosted Party' : 'Leave Party';
+//IF ADMIN
+if(admin){
+  console.log('video', video);
+  console.log('nowPlaying', nowPlaying);
+return(
 
-  return (
-    <div>
-      <button onClick={onClick}>CLICK MEEEE</button>
-
-      <div style={{ color: "black", backgroundColor: "white", fontFamily: "Big Shoulders Display", textalign: "center", fontSize: 20, fontWeight: 60, textAlign: "center", padding: "10px 20px" }}>
-        Your Party Access Code is: {`${accessCode}`}</div>
-      {!admin ? <div><button id="subscirbe" onClick={() => addASub()}>Subscribe</button></div> : <div></div>}
-      <VideoPlayer video={video} nowPlaying={nowPlaying} /> 
-      {admin ? (
+  <div>
+  <div style={{ color: "black", backgroundColor: "white", fontFamily: "Big Shoulders Display", textalign: "center", fontSize: 20, fontWeight: 60, textAlign: "center", padding: "10px 20px" }}>
+    Your Party Access Code is: {`${accessCode}`}</div>
+  <VideoPlayer video={video} nowPlaying={nowPlaying} />
+  <Button>ADMIN</Button> 
+       <div>
+      {/* <div>
+        <ul id='inviteesDisplay'>{invitees}</ul>
+      </div> */}
+      {/* <button onClick={setShowInvitees(!showInvitees)}>Invites</button> */}
+      <Button onClick={()=> setShowSearchComp(!showSearchComp)}>Make a Search</Button><br/>
+      {showSearchComp ? (
         <div>
-          {/* <div>
-            <ul id='inviteesDisplay'>{invitees}</ul>
-          </div> */}
-          {/* <button onClick={setShowInvitees(!showInvitees)}>Invites</button> */}
-          <button onClick={()=> setShowSearchComp(!showSearchComp)}>Make a Search</button><br/>
-          {showSearchComp ? (
-            <div>
-              <SearchParty searchHandler={searchHandler} />
-              <SearchResultsParty videos={videos} listClickHandler={partyClickHandler} userPlaylist={userPlaylist}/>
-            </div>
-            ) : (
-              <div></div>
-            )}
+          <SearchParty searchHandler={searchHandler} />
+          <SearchResultsParty videos={videos} listClickHandler={partyClickHandler} userPlaylist={userPlaylist}/>
+        </div>
+        ) : (
+          <div></div>
+        )}
+      <Queue newPartyPlaylist={newPartyPlaylist} partyClickHandler={partyClickHandler} voteUpdate={voteUpdate} votes={votes} />
+    </div>
+   
+  <Button onClick={() => dropHostParty()}>{buttonText}</Button>{' '}
+</div>
+);
+
+}
+
+
+//IF INVITEE WITH PRIVS
+if(adminSub){
+  return(
+    <div>
+    <div style={{ color: "black", backgroundColor: "white", fontFamily: "Big Shoulders Display", textalign: "center", fontSize: 20, fontWeight: 60, textAlign: "center", padding: "10px 20px" }}>
+      Your Party Access Code is: {`${accessCode}`}</div>
+    <VideoPlayer video={video} nowPlaying={nowPlaying} /> 
+    <Button>SUBADMIN</Button> 
+         <div>
+        <Button onClick={()=> setShowSearchComp(!showSearchComp)}>Make a Search</Button><br/>
+        {showSearchComp ? (
+          <div>
+            <SearchParty searchHandler={searchHandler} />
+            <SearchResultsParty videos={videos} listClickHandler={partyClickHandler} userPlaylist={userPlaylist}/>
+          </div>
+          ) : (
+            <div></div>
+          )}
+        <Queue newPartyPlaylist={newPartyPlaylist} partyClickHandler={partyClickHandler} voteUpdate={voteUpdate} votes={votes} />
+      </div>
+     
+    <Button onClick={() => dropHostParty()}>{buttonText}</Button>{' '}
+  </div>
+  );
+          
+  
+  }else{
+    console.log('video', video);
+    console.log('nowPlaying', nowPlaying);
+    return(
+      
+      <div>
+      <div><VideoPlayer video={video} nowPlaying={nowPlaying} /> </div>
+      <Button>INVITEE WITH NO PRIVS</Button> 
+      <div><Button id="subscirbe" onClick={() => addASub()}>Subscribe</Button></div> 
+           <div>
+          
           <Queue newPartyPlaylist={newPartyPlaylist} partyClickHandler={partyClickHandler} voteUpdate={voteUpdate} votes={votes} />
         </div>
-      ) : (
-        <div></div>
-      )}
+       
       <Button onClick={() => dropHostParty()}>{buttonText}</Button>{' '}
     </div>
-  );
-};
+    );
+  }
+
+
+
+}
+
+
+
+
+
+
+// //IF INVITEE WITHOUT PRIVS
+//   return (
+//     <div>
+//       <button onClick={onClick}>CLICK MEEEE</button>
+
+//       <div style={{ color: "black", backgroundColor: "white", fontFamily: "Big Shoulders Display", textalign: "center", fontSize: 20, fontWeight: 60, textAlign: "center", padding: "10px 20px" }}>
+//         Your Party Access Code is: {`${accessCode}`}</div>
+//       {!admin ? <div><button id="subscirbe" onClick={() => addASub()}>Subscribe</button></div> : <div></div>}
+//       <VideoPlayer video={video} nowPlaying={nowPlaying} /> 
+//       {admin ? (
+//         <div>
+//           {/* <div>
+//             <ul id='inviteesDisplay'>{invitees}</ul>
+//           </div> */}
+//           {/* <button onClick={setShowInvitees(!showInvitees)}>Invites</button> */}
+//           <button onClick={()=> setShowSearchComp(!showSearchComp)}>Make a Search</button><br/>
+//           {showSearchComp ? (
+//             <div>
+//               <SearchParty searchHandler={searchHandler} />
+//               <SearchResultsParty videos={videos} listClickHandler={partyClickHandler} userPlaylist={userPlaylist}/>
+//             </div>
+//             ) : (
+//               <div></div>
+//             )}
+//           <Queue newPartyPlaylist={newPartyPlaylist} partyClickHandler={partyClickHandler} voteUpdate={voteUpdate} votes={votes} />
+//         </div>
+//       ) : (
+//         <div></div>
+//       )}
+//       <Button onClick={() => dropHostParty()}>{buttonText}</Button>{' '}
+//     </div>
+//   );
+// };
 
 export default PartyPage;
