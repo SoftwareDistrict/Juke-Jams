@@ -71,7 +71,8 @@ class App extends Component {
     getInvitees(currentId)
     .then((response) => {
       response.data.forEach((invitee) =>{
-        if(invitee.id_user === currentId && invitee.admin_status === true){
+        console.log(74, invitee.admin_status);
+        if(invitee.id_user === currentId && invitee.admin_status === '1'){
           this.setState({adminSub: true});
         }
       })
@@ -94,6 +95,7 @@ class App extends Component {
     })
     .catch(err => console.error('could not get all invitees: ', err));
   }
+
 
   addASub() {
     const { accessCode, userCell, currentId, currentUser } = this.state;
@@ -134,14 +136,14 @@ class App extends Component {
             id: { videoId: song.url },
           };
         });
-        console.log(this.state.video.id);
+       
         if (this.state.video.id) {
           window.ytPlayer.loadVideoById(this.state.video.id.videoId)
           $('#player').toggle();
           window.ytPlayer.playVideo();
           }
           this.setState({partyPlaylist, votes, joinPartyClicked: true });
-          console.log(this.state.joinPartyClicked);
+         
           this.refreshParty(true);
   })
 }
@@ -225,7 +227,7 @@ class App extends Component {
     .then(({ data }) => {
       let userPlaylist = [];
       let video = {};
-      console.log(data.songs, 'user has a playlist with songs')
+
       if (data.songs) {
         userPlaylist = data.songs.map((song) => {
           return {
@@ -315,11 +317,11 @@ class App extends Component {
   listClickHandler(video) {
     const { hostPartyClicked, currentId, userPlaylist } = this.state;
     if (hostPartyClicked) {
-      console.log('im inside of hostpartyclicked')
+
       this.setState({ video });
       window.ytPlayer.loadVideoById(video.id.videoId);
     } else {
-      console.log('im inside of the else statment')
+
       postPlaylist({
         url: video.id.videoId,
         title: video.snippet.title,

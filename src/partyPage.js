@@ -47,13 +47,11 @@ const PartyPage = ({
       // setting state that will contain the current playlist being used in partypage
 
       const [newPartyPlaylist, setPlaylist] = useState(partyPlaylist)
-      console.log(newPartyPlaylist, 'im the new playlist')
+      
 
   const [showSearchComp, setShowSearchComp] = useState(false);
   // const [ showInvitees, setShowInvitees ] = useState(false);
- const onClick = () => {
-    console.log('userCell: ', userCell);
-  }
+
 
   const partyClickHandler = (video) => {
    const id = hostiD(accessCode);
@@ -63,7 +61,7 @@ const PartyPage = ({
   //     id = hostiD();
   //   }
   
-    console.log('partyclick handler CLIIIICKED')
+  
       postPlaylist({
         url: video.id.videoId,
         title: video.snippet.title,
@@ -71,7 +69,7 @@ const PartyPage = ({
         thumbnail: video.snippet.thumbnails.default.url,
       }, id)
       .then(({ data }) => {
-        console.log(data, 'party page data postPlaylist DATABASE')
+    
         if (data === false) {
           // If song doesn't already exist in database
           // this.setState({
@@ -85,12 +83,10 @@ const PartyPage = ({
       .catch((err) => console.log('listClickHandler: ', err));
     
   }
-console.log(partyClickHandler, ' am i not a freaking function')
+
   const buttonText = hostPartyClicked ? 'Drop Hosted Party' : 'Leave Party';
 //IF ADMIN
 if(admin){
-  console.log('video', video);
-  console.log('nowPlaying', nowPlaying);
 return(
 
   <div>
@@ -123,7 +119,7 @@ return(
 
 
 //IF INVITEE WITH PRIVS
-if(adminSub){
+else if(adminSub){
   return(
     <div>
     <div style={{ color: "black", backgroundColor: "white", fontFamily: "Big Shoulders Display", textalign: "center", fontSize: 20, fontWeight: 60, textAlign: "center", padding: "10px 20px" }}>
@@ -149,8 +145,6 @@ if(adminSub){
           
   
   }else{
-    console.log('video', video);
-    console.log('nowPlaying', nowPlaying);
     return(
       
       <div>

@@ -3,7 +3,6 @@ import {Image, ListGroupItem, Button } from "react-bootstrap/";
 
 // Host playlist entry
 const QueueEntry = ({ video, partyClickHandler, voteUpdate, sortPlaylist, votes }) => {
-  console.log(partyClickHandler, 'im inside queueEntry')
   return (
     <ListGroupItem action style={{padding: "5%"}}>
       <div>

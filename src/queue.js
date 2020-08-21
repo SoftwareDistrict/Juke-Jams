@@ -4,7 +4,7 @@ import ListGroup from "react-bootstrap/ListGroup";
 
 // Host Playlist
 const Queue = ({ newPartyPlaylist, partyClickHandler, sortPlaylist, voteUpdate, votes }) => {
-  console.log(partyClickHandler, 'im inside queue')
+
   return (
     <ListGroup style={{ padding: "5%" }}>
     <div>
