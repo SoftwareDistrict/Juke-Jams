@@ -15,26 +15,23 @@ const {
     Invitee
   } = require('../db/database.js');
 
-// // SEND ACCESS CODE
-// router.post('/invites', (req, res) => {
-//   const { msg, cell } = req.body;
-//   client.messages.create({ 
-//     body: msg, 
-//     from: TWL_CELL,       
-//     to: cell
-//   }) 
-//   .then(message => console.log(message.sid)) 
-//   .done();
-// });
+// SEND ACCESS CODE
+router.post('/invites', (req, res) => {
+  const { msg, cell } = req.body;
+  client.messages.create({ 
+    body: msg, 
+    from: TWL_CELL,       
+    to: cell
+  }) 
+  .then(message => console.log(message.sid)) 
+  .done();
+});
 
 // GET PHONE NUMBER
 router.get('/findinvites/:id', async(req, res) => {
   const hostId = req.params.id;
   await Invitee.findAll({ where: { id_host: hostId } })
-  .then((response) => {
-    // console.log('response: ', response);
-    res.status(200).send(response);
-  })
+  .then((response) => res.status(200).send(response))
   .catch(err => {
     res.sendStatus(500);
     console.error('could not get all invitees: ', err);
