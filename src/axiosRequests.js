@@ -2,11 +2,13 @@
 const axios = require('axios');
 // const { PORT } = process.env;
 // const { URL } = require('../config');
-// const URL = 'https://jukejams.herokuapp.com';
+// const URL = 'https://plated-planet-286900.uc.r.appspot.com/';
 // const PORT = 42368;
 const URL = 'http://localhost:8080';
 
 const postCell = (cell) => axios.post(`${URL}/postCell`, cell);
+
+const invite = (creds) => axios.post(`${URL}/invites`, creds);
 
 const getInvitees = (hostId) => axios.get(`${URL}/findinvites/${hostId}`);
 
@@ -42,5 +44,6 @@ module.exports = {
   postCell,
   getCellBoolAndCellNum,
   addInvitee,
+  invite,
   // putPlaylist
 };
