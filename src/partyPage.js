@@ -32,7 +32,7 @@ const PartyPage = ({
 }) => {
 
   // setting state that will contain the current playlist being used in partypage
-  const [ newPartyPlaylist, setPlaylist ] = useState(partyPlaylist)
+  // const [ partyPlaylist, setPlaylist ] = useState(partyPlaylist)
   const [ showSearchComp, setShowSearchComp ] = useState(false);
   const [ showInvitees, setShowInvitees ] = useState(false);
   const [ number, setNumber ] = useState('');
@@ -57,7 +57,7 @@ const PartyPage = ({
     }, id)
     .then(({ data }) => {
       if (data === false) {
-        setPlaylist(newPartyPlaylist.concat([video]))
+        partyPlaylist.concat([video]);
       }
     })
     .catch((err) => console.log('listClickHandler: ', err));
@@ -125,7 +125,7 @@ const PartyPage = ({
             ) : (
               <div></div>
             )}
-          <Queue newPartyPlaylist={newPartyPlaylist} partyClickHandler={partyClickHandler} voteUpdate={voteUpdate} votes={votes} />
+          <Queue partyPlaylist={partyPlaylist} partyClickHandler={partyClickHandler} voteUpdate={voteUpdate} votes={votes} />
         </div>
         <Button onClick={() => dropHostParty()}>{buttonText}</Button>{' '}
       </div>
@@ -148,7 +148,7 @@ const PartyPage = ({
             ) : (
               <div></div>
             )}
-          <Queue newPartyPlaylist={newPartyPlaylist} partyClickHandler={partyClickHandler} voteUpdate={voteUpdate} votes={votes} />
+          <Queue partyPlaylist={partyPlaylist} partyClickHandler={partyClickHandler} voteUpdate={voteUpdate} votes={votes} />
         </div>
         <Button onClick={() => dropHostParty()}>{buttonText}</Button>{' '}
       </div>
@@ -160,7 +160,7 @@ const PartyPage = ({
         <div><Button>INVITEE WITH NO PRIVS</Button></div> 
         <div><Button id="subscirbe" onClick={() => addASub()}>Subscribe</Button></div> 
         <div>
-          <Queue newPartyPlaylist={newPartyPlaylist} partyClickHandler={partyClickHandler} voteUpdate={voteUpdate} votes={votes} />
+          <Queue partyPlaylist={partyPlaylist} partyClickHandler={partyClickHandler} voteUpdate={voteUpdate} votes={votes} />
         </div>
       <Button onClick={() => dropHostParty()}>{buttonText}</Button>{' '}
     </div>
