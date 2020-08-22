@@ -108,8 +108,8 @@ class App extends Component {
     getParty(accessCode)
       .then(({ data }) => {
         const videoUrl = data[0].song.url
-        let partyPlaylist = [];
-        partyPlaylist = data.map((item) => {
+        let partyPlay = [];
+        partyPlay = data.map((item) => {
           const { song } = item;
           if (item.nowPlaying) {
             this.setState({ nowPlaying: song });
@@ -124,12 +124,10 @@ class App extends Component {
             id: { videoId: song.url },
           };
         });
-        if (this.state.video.id) {
-          window.ytPlayer.loadVideoById(videoUrl)
-          $('#player').toggle();
-          window.ytPlayer.playVideo();
-        }
-        this.setState({partyPlaylist, votes, joinPartyClicked: true });
+        window.ytPlayer.loadVideoById(videoUrl)
+        $('#player').toggle();
+        window.ytPlayer.playVideo();
+        this.setState({partyPlaylist: partyPlay, votes, joinPartyClicked: true });
         this.refreshParty(true);
       })
       .catch(err => console.error('this happened when join party: ', err));
@@ -214,7 +212,6 @@ class App extends Component {
     .then(({ data }) => {
       let userPlaylist = [];
       let video = {};
-
       if (data.songs) {
         userPlaylist = data.songs.map((song) => {
           return {
@@ -253,17 +250,29 @@ class App extends Component {
         if (window.accessCode) {
           getParty(window.accessCode)
           .then(({ data }) => {
+            let partyPlay = [];
+            partyPlay = data.map((item) => {
+              const { song } = item;
+              return {
+                snippet: {
+                  thumbnails: { default: { url: song.thumbnail } },
+                  title: song.title,
+                  channelTitle: song.artist,
+                },
+                id: { videoId: song.url },
+              };
+            });
             data.forEach(item => {
-              const { song, vote, nowPlaying } = item
-              votes[song.url] = vote
+              const { song, vote, nowPlaying } = item;
+              votes[song.url] = vote;
               if (nowPlaying) {
-                this.setState({ nowPlaying: song })
+                this.setState({ nowPlaying: song });
               }
-            })
-            this.setState({ votes })
-          })
+            });
+            this.setState({ votes, partyPlaylist: partyPlay, userPlaylist: partyPlay });
+          });
         }
-      }, 5000)
+      }, 5000);
     } else {
       console.log('cancelling refresh');
       clearInterval(this.refresh);

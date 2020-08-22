@@ -147,7 +147,7 @@ router.get('/party/:code', async (req, res) => {
     await Promise.all(songsWithDetails).then((result) => {
       res.send(result.map((song, index) => {
         const nowPlaying = song.url === party.nowPlaying;
-        return { song, vote: playlistSongs[index].vote || 0, nowPlaying };
+        return { song, vote: playlistSongs[index].vote || 0, nowPlaying, playlist };
       }));
     });
   } else {
