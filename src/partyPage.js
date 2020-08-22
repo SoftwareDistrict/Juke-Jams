@@ -25,10 +25,13 @@ const PartyPage = ({
   videos,
   searchHandler,
   userCell,
+  grabInvitees,
   invitees,
   addASub,
   accessCode,
-  currentId
+  currentId,
+  updateSubAdmin,
+  setSubAdmin
 }) => {
 
   // setting state that will contain the current playlist being used in partypage
@@ -69,7 +72,30 @@ const PartyPage = ({
     } else {
       return Number(accessCode[accessCode.length - 1]);
     }
+
   };
+  const inviteesButton = () => {
+    setShowInvitees(!showInvitees);
+    grabInvitees();
+  };
+
+  const grantPriv = (status, id) => {
+    invitees.map(invitee => {
+      if(id === invitee.id_user) {
+        setSubAdmin(true);
+        updateSubAdmin(invitee.id, currentId, status);
+      }
+    })
+  }
+
+  const takePriv = (status, id) => {
+    invitees.map(invitee => {
+      if(id === invitee.id_user) {
+        setSubAdmin(false);
+        updateSubAdmin(invitee.id, currentId, status);
+      }
+    })
+  }
 
   const buttonText = hostPartyClicked ? 'Drop Hosted Party' : 'Leave Party';
 
@@ -89,10 +115,13 @@ const PartyPage = ({
                 msg: accessCode,
                 cell: number
               })} >SEND</Button></div>
-              <ul id='inviteesDisplay'>{
+              <ul id='inviteesDisplay'>
+                {
                 invitees.map(({
+                  id,
                   id_host,
                   id_user,
+                  admin_status,
                   user_firstName,
                   user_lastName,
                   user_cell
@@ -107,7 +136,8 @@ const PartyPage = ({
                           cell: user_cell
                         });
                       }}>Invite</Button>
-                      <Button id='admin-btn'>Grant Priveleges</Button>
+                      {admin_status == 0? <Button id='admin-btn' onClick={() => grantPriv(true, id_user)}>Grant Priveleges</Button>
+                      : <Button id='admin-btn' onClick={() => takePriv(false, id_user)}>Take Priveleges</Button>}
                     </li>
                   );
                 })}</ul>
@@ -115,7 +145,10 @@ const PartyPage = ({
             ) : (
               <div></div>
           )}
-          <div><Button onClick={() => setShowInvitees(!showInvitees)}>Invites</Button></div>
+          <div><Button onClick={() => {
+            inviteesButton()
+          }
+          }>Invites</Button></div>
           <div><Button onClick={()=> setShowSearchComp(!showSearchComp)}>Make a Search</Button></div><br/>
           {showSearchComp ? (
             <div>
