@@ -28,6 +28,8 @@ const getYouTube = (options) => axios.get('https://www.googleapis.com/youtube/v3
 
 const postPlaylist = (options, currentId) => axios.post(`${URL}/playlist/${currentId}`, options);
 
+const updateInvitee = (options, id) => axios.post(`${URL}/invites/${id}`, options)
+
 // const putPlaylist = (options) => {
 //   console.log('inside the put function');
 //   return axios.put(`${URL}/playlist/`, options);
@@ -45,5 +47,6 @@ module.exports = {
   getCellBoolAndCellNum,
   addInvitee,
   invite,
+  updateInvitee
   // putPlaylist
 };
