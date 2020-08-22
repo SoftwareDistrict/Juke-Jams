@@ -107,6 +107,7 @@ class App extends Component {
     const { accessCode, votes } = this.state;
     getParty(accessCode)
       .then(({ data }) => {
+        const videoUrl = data[0].song.url
         let partyPlaylist = [];
         partyPlaylist = data.map((item) => {
           const { song } = item;
@@ -124,7 +125,7 @@ class App extends Component {
           };
         });
         if (this.state.video.id) {
-          window.ytPlayer.loadVideoById(this.state.video.id.videoId)
+          window.ytPlayer.loadVideoById(videoUrl)
           $('#player').toggle();
           window.ytPlayer.playVideo();
         }
@@ -301,6 +302,7 @@ class App extends Component {
 
   // Handles clicks on youtube search results list
   listClickHandler(video) {
+    console.log(video, 'video from clicklist handler');
     const { hostPartyClicked, currentId, userPlaylist } = this.state;
     if (hostPartyClicked) {
 
@@ -313,6 +315,7 @@ class App extends Component {
         title: video.snippet.title,
         artist: video.snippet.channelTitle,
         thumbnail: video.snippet.thumbnails.default.url,
+
       }, currentId)
       .then(({ data }) => {
         if (data === false) {
