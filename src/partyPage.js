@@ -31,7 +31,8 @@ const PartyPage = ({
   accessCode,
   currentId,
   updateSubAdmin,
-  setSubAdmin
+  setSubAdmin,
+  queueClickHandler
 }) => {
 
   // setting state that will contain the current playlist being used in partypage
@@ -158,7 +159,7 @@ const PartyPage = ({
             ) : (
               <div></div>
             )}
-          <Queue partyPlaylist={partyPlaylist} partyClickHandler={partyClickHandler} voteUpdate={voteUpdate} votes={votes} />
+          <Queue partyPlaylist={partyPlaylist} partyClickHandler={partyClickHandler} voteUpdate={voteUpdate} votes={votes} queueClickHandler={queueClickHandler} />
         </div>
         <Button onClick={() => dropHostParty()}>{buttonText}</Button>{' '}
       </div>
@@ -181,7 +182,7 @@ const PartyPage = ({
             ) : (
               <div></div>
             )}
-          <Queue partyPlaylist={partyPlaylist} partyClickHandler={partyClickHandler} voteUpdate={voteUpdate} votes={votes} />
+          <Queue partyPlaylist={partyPlaylist} partyClickHandler={partyClickHandler} voteUpdate={voteUpdate} votes={votes} queueClickHandler={queueClickHandler}/>
         </div>
         <Button onClick={() => dropHostParty()}>{buttonText}</Button>{' '}
       </div>
@@ -193,7 +194,7 @@ const PartyPage = ({
         <div><Button>INVITEE WITH NO PRIVS</Button></div> 
         <div><Button id="subscirbe" onClick={() => addASub()}>Subscribe</Button></div> 
         <div>
-          <Queue partyPlaylist={partyPlaylist} partyClickHandler={partyClickHandler} voteUpdate={voteUpdate} votes={votes} />
+          <Queue partyPlaylist={partyPlaylist} partyClickHandler={partyClickHandler} voteUpdate={voteUpdate} queueClickHandler={queueClickHandler} votes={votes} />
         </div>
       <Button onClick={() => dropHostParty()}>{buttonText}</Button>{' '}
     </div>
