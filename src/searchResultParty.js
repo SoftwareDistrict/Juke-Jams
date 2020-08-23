@@ -9,7 +9,7 @@ const SearchResultsParty = ({ videos, listClickHandler }) => {
     <ListGroup style={{ padding: "5%" }}> 
     <div>
       {videos.map((video) => (
-        <ListEntryParty video={video} listClickHandler={partyClickHandler} />
+        <ListEntryParty video={video} listClickHandler={listClickHandler} />
       ))}
     </div>
     </ListGroup>

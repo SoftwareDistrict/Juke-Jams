@@ -42,9 +42,16 @@ router.get('/findinvites/:id', async(req, res) => {
 router.post('/subscribe', async (req, res) => {
   const options = req.body;
   console.log('options: ', options);
-  await Invitee.create(options)
-  .then(() => console.log('added that Sub BABYYYY'))
-  .catch((err) => console.error('that did not add the sub: ', err));
+  await Invitee.findAll({where: {id_user: options.id_user, id_host: options.id_host}})
+  .then(res => {
+    if(res.length){
+      console.log('User already subbed to host');
+    }else{
+      Invitee.create(options)
+      .then(() => console.log('added that Sub BABYYYY'))
+      .catch((err) => console.error('that did not add the sub: ', err))
+    }
+  });
 });
 
 //Login route
@@ -226,6 +233,19 @@ router.put('/party', async (req, res) => {
   await Party.update({ nowPlaying }, { where: { accessCode } });
   res.sendStatus(200);
 });
+
+router.post('/invites/:id', async (req, res) => {
+  const { id } = req.params;
+  const { admin_status, id_host } = req.body;
+  await Invitee.update({ admin_status }, {where:{id: id}})
+  .then(() => {
+    return Invitee.findAll({where: {id_host: id_host}})
+  })
+  .then(resp => {
+    res.send(resp);
+  })
+  .catch(err => console.error('UpdateInvitee: ', err))
+})
 
 module.exports = {
   router,

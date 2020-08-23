@@ -4,13 +4,13 @@ import PartyPage from './partyPage.js';
 import QueueEntry from './queueEntry.js';
 import GoogleLogin from 'react-google-login';
 import { YOUTUBE_API_KEY, OAUTH_CLIENT_ID} from '../config.js';
-import { getParty, putVotes, postHost, postLogin, getYouTube, postPlaylist, getCellBoolAndCellNum, addInvitee, getInvitees, postCell } from './axiosRequests'
+import { getParty, putVotes, postHost, postLogin, getYouTube, postPlaylist, getCellBoolAndCellNum, addInvitee, getInvitees, postCell, updateInvitee } from './axiosRequests'
 import $ from 'jquery';
 import player from './youTubeScript.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Button, Jumbotron, OverlayTrigger, Popover } from 'react-bootstrap';
 import Landing from './landing.js';
-import Cell from './cell.js'
+import Cell from './cell.js';
 class App extends Component {
   constructor(props) {
     super(props);
@@ -51,6 +51,9 @@ class App extends Component {
     this.grabInvitees = this.grabInvitees.bind(this);
     this.addASub = this.addASub.bind(this);
     this.changeHandler = this.changeHandler.bind(this);
+    this.updateSubAdmin = this.updateSubAdmin.bind(this);
+    this.setSubAdmin = this.setSubAdmin.bind(this);
+    this.queueClickHandler = this.queueClickHandler.bind(this);
   }
 
   // Toggles the initial player
@@ -65,6 +68,12 @@ class App extends Component {
     });
   }
 
+  setSubAdmin(bool) {
+    this.setState({
+      adminSub: bool
+    })
+  }
+
   // grab all users that have invitee status
   grabInvitees() {
     const { currentId } = this.state;
@@ -73,25 +82,25 @@ class App extends Component {
     .catch(err => console.error('could not get all invitees: ', err));
   }
 
-  // getAdminStatus() {
-  //   getInviteesMaybe(IDK)
-  //   .then((response) => {
-  //     response.data.forEach((invitee) =>{
-  //       console.log(74, invitee.admin_status);
-  //       if(invitee.id_user === currentId && invitee.admin_status === '1'){
-  //         this.setState({adminSub: true});
-  //       }
-  //     })
-  //   })
-  //   .catch(err => console.error('could not grab admin status: ', err));
-  // }
+  updateSubAdmin(id, id_host, bool) {
+    const options = {
+      admin_status: bool,
+      id_host: id_host
+    }
+    updateInvitee(options, id)
+    .then((response) => {
+      console.log(response.data);
+      this.setState({ invitees: response.data })
+    })
+    .catch(err => console.error('could not grab admin status: ', err));
+  }
 
   addASub() {
     const { accessCode, userCell, currentId, currentUser } = this.state;
     const options = {
       id_host: Number(accessCode[accessCode.length - 1]),
       id_user: currentId,
-      // admin_status: true,
+      admin_status: false,
       user_firstName: currentUser.firstName,
       user_lastName: currentUser.lastName,
       user_cell: userCell,
@@ -128,6 +137,16 @@ class App extends Component {
         $('#player').toggle();
         window.ytPlayer.playVideo();
         this.setState({partyPlaylist: partyPlay, votes, joinPartyClicked: true });
+        getInvitees(Number(accessCode[accessCode.length - 1]))
+        .then(({ data }) => {
+          console.log(data, 'joinPartyInvitees data');
+          data.forEach(invitee => {
+            if(invitee.admin_status == 1 && invitee.id_user === this.state.currentId){
+              this.setState({adminSub: true})
+            }
+          })
+        })
+        .catch(err => console.error('getInvitees joinParty: ', err));
         this.refreshParty(true);
       })
       .catch(err => console.error('this happened when join party: ', err));
@@ -369,9 +388,16 @@ class App extends Component {
     })
   }
 
-   changeHandler (event) {
+  queueClickHandler (video) {
+    console.log(video);
+    this.setState({ video });
+    window.ytPlayer.loadVideoById(video.id.videoId)
+  };
+
+  changeHandler (event) {
       this.setState({ cellText: event.target.value });
   }
+
 
   render() {
     const {
@@ -415,11 +441,15 @@ class App extends Component {
           videos={videos}
           searchHandler={this.searchHandler}
           userCell={userCell}
+          grabInvitees={this.grabInvitees}
           invitees={invitees}
           addASub={this.addASub}
           currentId={currentId}
           userPlaylist={userPlaylist}
           grabInvitees={this.grabInvitees}
+          updateSubAdmin={this.updateSubAdmin}
+          setSubAdmin={this.setSubAdmin}
+          queueClickHandler={this.queueClickHandler}
         />
       );
     }
