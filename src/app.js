@@ -53,6 +53,7 @@ class App extends Component {
     this.changeHandler = this.changeHandler.bind(this);
     this.updateSubAdmin = this.updateSubAdmin.bind(this);
     this.setSubAdmin = this.setSubAdmin.bind(this);
+    this.queueClickHandler = this.queueClickHandler.bind(this);
   }
 
   // Toggles the initial player
@@ -387,9 +388,16 @@ class App extends Component {
     })
   }
 
-   changeHandler (event) {
+  queueClickHandler (video) {
+    console.log(video);
+    this.setState({ video });
+    window.ytPlayer.loadVideoById(video.id.videoId)
+  };
+
+  changeHandler (event) {
       this.setState({ cellText: event.target.value });
   }
+
 
   render() {
     const {
@@ -441,6 +449,7 @@ class App extends Component {
           grabInvitees={this.grabInvitees}
           updateSubAdmin={this.updateSubAdmin}
           setSubAdmin={this.setSubAdmin}
+          queueClickHandler={this.queueClickHandler}
         />
       );
     }
